@@ -25,9 +25,9 @@ public class Panier
     LocalDate datePanier;
 
     /*======================== MAPPING =========================*/
-//    @OneToOne
-//    @JoinColumn(name = "idPatient", unique = true)
-//    Patient patient;
+    @OneToOne
+    @JoinColumn(name = "idPatient", unique = true)
+    Patient patient;
 
     @OneToMany(mappedBy = "panier", cascade = CascadeType.ALL)
     List<Ordonnance> listOrdonnances;

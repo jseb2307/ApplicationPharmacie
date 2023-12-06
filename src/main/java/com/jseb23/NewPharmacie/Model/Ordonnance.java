@@ -1,5 +1,6 @@
 package com.jseb23.NewPharmacie.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -10,7 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Getter
+@Data
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @ToString
 @Entity
@@ -29,19 +30,15 @@ public class Ordonnance
     @JoinColumn(name = "idDocteur")
     Docteur docteur;
 
-//    @ManyToOne
-//    @JoinColumn(name = "idPatient")
-//    Patient patient;
+    @ManyToOne
+    @JoinColumn(name = "idPatient")
+    @JsonIgnore
+    Patient patient;
 
     @ManyToOne
     @JoinColumn(name = "idPanier")
+    @JsonIgnore
     Panier panier;
 
-    /**
-     * SETTER
-     * @param dateOrdonnance
-     */
-    public void setDateOrdonnance(LocalDate dateOrdonnance) {
-        this.dateOrdonnance = dateOrdonnance;
-    }
+
 }

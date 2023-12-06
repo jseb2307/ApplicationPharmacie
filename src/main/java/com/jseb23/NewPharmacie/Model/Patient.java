@@ -40,26 +40,29 @@ public class Patient {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "idInformations")
+    @JsonManagedReference
     Informations informations;
 
     @ManyToOne
     @JoinColumn(name = "idMutuelle")
-    @JsonManagedReference
+    @JsonIgnore
     Mutuelle mutuelle;
-//
-//    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
-//    List<Ordonnance> listOrdonnances;
-//
-//    @ManyToMany
-//    @JsonManagedReference
-//    @JoinTable(
-//            name = "patient_docteur",
-//            joinColumns = @JoinColumn(name = "idPatient"),
-//            inverseJoinColumns = @JoinColumn(name = "idDocteur")
-//    )
-//    List<Docteur> listDocteurs;
-//
-//    @OneToOne(mappedBy = "patient", cascade = CascadeType.ALL)
-//    Panier panier;
+
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    @JsonBackReference
+    List<Ordonnance> listOrdonnances;
+
+    @ManyToMany
+    @JsonIgnore
+    @JoinTable(
+            name = "patient_docteur",
+            joinColumns = @JoinColumn(name = "idPatient"),
+            inverseJoinColumns = @JoinColumn(name = "idDocteur")
+    )
+    List<Docteur> listDocteurs;
+
+    @JsonManagedReference
+    @OneToOne(mappedBy = "patient", cascade = CascadeType.ALL)
+    Panier panier;
 
 }

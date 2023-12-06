@@ -30,16 +30,16 @@ public class Docteur {
     @JoinColumn(name = "idInformations")
     Informations informations;
 
-//    @ManyToMany(mappedBy = "listDocteurs", cascade = CascadeType.ALL)
-//    List<SpecialiteDocteur> listSpecialiteDocteurs;
-//
-//    @OneToMany(mappedBy = "docteur", cascade = CascadeType.ALL)
-//    List<Ordonnance> listOrdonnances;
-//
-//    //@JsonManagedReference
-//    @ManyToMany(mappedBy = "listDocteurs")
-//    @JsonBackReference
-//    private List<Patient> listPatients;
+    @JsonBackReference
+    @ManyToMany(mappedBy = "listDocteurs", cascade = CascadeType.ALL)
+    List<SpecialiteDocteur> listSpecialiteDocteurs;
+
+    @OneToMany(mappedBy = "docteur", cascade = CascadeType.ALL)
+    List<Ordonnance> listOrdonnances;
+
+
+    @ManyToMany(mappedBy = "listDocteurs")
+    private List<Patient> listPatients;
 
 
 }

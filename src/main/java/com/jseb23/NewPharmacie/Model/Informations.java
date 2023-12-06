@@ -1,5 +1,6 @@
 package com.jseb23.NewPharmacie.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -44,18 +45,21 @@ public class Informations
     @Email
     @Column(length = 30)
     String mail;
-//
-//    @OneToMany(mappedBy = "informations")
-//    List<Docteur> docteurs;
-//
-//    @OneToMany(mappedBy = "informations")
-//    List<Mutuelle> listeMutuelle;
-//
-//    @OneToMany(mappedBy = "informations")
-//    List<Patient> listePatient;
-//
-//    @OneToOne(mappedBy = "informations")
-//    Pharmacie pharmacie;
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "informations")
+    List<Docteur> docteurs;
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "informations")
+    List<Mutuelle> listeMutuelle;
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "informations")
+    List<Patient> listePatient;
+
+    @OneToOne(mappedBy = "informations")
+    Pharmacie pharmacie;
 
 
 }

@@ -1,6 +1,6 @@
 package com.jseb23.NewPharmacie.Model;
 
-import com.jseb23.NewPharmacie.Model.Docteur;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -26,6 +26,7 @@ public class SpecialiteDocteur
 
     /*===================== MAPPING =====================*/
 
+    @JsonBackReference
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "SpecialiteDuDocteur",
