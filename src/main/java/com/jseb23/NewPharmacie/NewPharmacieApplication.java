@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
-@EntityScan(basePackages = "com.jseb23.NewPharmacie")
+//@EntityScan(basePackages = "com.jseb23.NewPharmacie")
 public class NewPharmacieApplication
 {
 

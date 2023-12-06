@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<!-- Coding By CodingNepal - www.codingnepalweb.com -->
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmacie SPARADRAP</title>
+    <!-- Linking Google font link for icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+    <link rel="stylesheet" href="maPharmacie.css">
+    <script src="maPharmacie.js" defer></script>
+</head>
+<body>
+
+<!--<header>
+    <nav class="navbar">
+        <span class="hamburger-btn material-symbols-rounded">menu</span>
+
+        <ul class="links">
+            <span class="close-btn material-symbols-rounded">close</span>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Portfolio</a></li>
+            <li><a href="#">Courses</a></li>
+            <li><a href="#">About us</a></li>
+            <li><a href="#">Contact us</a></li>
+        </ul>
+        <button class="login-btn">LOG IN</button>
+    </nav>
+</header>-->
+
+<div class="blur-bg-overlay"></div>
+<div class="form-popup">
+    <span class="close-btn material-symbols-rounded">close</span>
+    <div class="form-box login">
+        <div class="form-details">
+            <h2>Content de vous revoir</h2>
+            <p>Veuillez vous connecter en utilisant vos informations personnelles pour rester en contact avec nous.</p>
+        </div>
+        <div class="form-content">
+            <h2>SE CONNECTER</h2>
+            <form action="#">
+                <div class="input-field">
+                    <input type="text" required>
+                    <label>Email</label>
+                </div>
+                <div class="input-field">
+                    <input type="password" required>
+                    <label>Mot de Passe</label>
+                </div>
+                <a href="#" class="forgot-pass-link">Mot de passe oublié?</a>
+                <button type="submit">Se connecter</button>
+            </form>
+            <div class="bottom-link">
+                Vous n'avez pas de compte ?
+                <a href="#" id="signup-link">S'inscrire</a>
+            </div>
+        </div>
+    </div>
+    <div class="form-box signup">
+        <div class="form-details">
+            <h2>Créer un compte</h2>
+            <p>Veuillez vous inscrire en utilisant vos informations personnelles.</p>
+        </div>
+        <div class="form-content">
+            <h2>SIGNUP</h2>
+            <form action="#">
+                <div class="input-field">
+                    <input type="text" required>
+                    <label>Entrer votre email</label>
+                </div>
+                <div class="input-field">
+                    <input type="password" required>
+                    <label>Créer un mot de passe</label>
+                </div>
+                <div class="policy-text">
+                    <input type="checkbox" id="policy">
+                    <label for="policy">
+                        I agree the
+                        <a href="#" class="option">Termes et conditions</a>
+                    </label>
+                </div>
+                <button type="submit">S'inscrire</button>
+            </form>
+            <div class="bottom-link">
+                Vous avez déjà un compte?
+                <a href="#" id="login-link">Se connecter</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<aside class="sidebar">
+    <div class="logo">
+        <img src="logo-pharmacy.png" alt="logo">
+        <h2>SPARADRAP</h2>
+    </div>
+    <ul class="links">
+        <h4>Commande</h4>
+        <li>
+            <span class="material-symbols-outlined">dashboard</span>
+            <a href="#">Dashboard</a>
+        </li>
+        <li>
+            <span class="material-symbols-outlined">show_chart</span>
+            <a href="#">Revenue</a>
+        </li>
+        <li>
+            <span class="material-symbols-outlined">flag</span>
+            <a href="#">Reports</a>
+        </li>
+        <hr>
+        <h4>Advanced</h4>
+        <li>
+            <span class="material-symbols-outlined">person</span>
+            <a href="#">Designer</a>
+        </li>
+        <li>
+            <span class="material-symbols-outlined">group</span>
+            <a href="#">Developer </a>
+        </li>
+        <li>
+            <span class="material-symbols-outlined">ambient_screen</span>
+            <a href="#">Magic Build</a>
+        </li>
+        <li>
+            <span class="material-symbols-outlined">pacemaker</span>
+            <a href="#">Theme Maker</a>
+        </li>
+        <li>
+            <span class="material-symbols-outlined">monitoring</span>
+            <a href="#">Analytic</a>
+        </li>
+        <hr>
+        <h4>Account</h4>
+        <li>
+            <span class="material-symbols-outlined">bar_chart</span>
+            <a href="#">Overview</a>
+        </li>
+        <li>
+            <span class="material-symbols-outlined">mail</span>
+            <a href="#">Message</a>
+        </li>
+        <li>
+            <span class="material-symbols-outlined">settings</span>
+            <a href="#">Settings</a>
+        </li>
+        <li class="logout-link">
+            <span class="material-symbols-outlined">logout</span>
+            <a href="#">Se Déconnecter</a>
+        </li>
+    </ul>
+</aside>
+
+
+</body>
+</html>
