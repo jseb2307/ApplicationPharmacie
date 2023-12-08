@@ -1,6 +1,7 @@
 package com.jseb23.NewPharmacie.Model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.jseb23.NewPharmacie.Utilisateurs.Utilisateurs;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -58,8 +59,12 @@ public class Informations
     @OneToMany(mappedBy = "informations")
     List<Patient> listePatient;
 
-    @OneToOne(mappedBy = "informations")
+    @OneToOne
+    @JoinColumn(name = "idPharmacie", referencedColumnName = "idPharmacie", unique = true)
     Pharmacie pharmacie;
+
+    @OneToMany(mappedBy = "informations")
+    List<Utilisateurs> listeUtilisateurs;
 
 
 }

@@ -25,9 +25,8 @@ public class Pharmacie
     @Column(length = 20, nullable = false)
     String nomPharmacie;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "idInformations")
-    Informations informations;
+    @OneToOne(mappedBy = "pharmacie", cascade = CascadeType.ALL)
+    private Informations informations;
 
     @OneToMany(mappedBy = "pharmacie", cascade = CascadeType.ALL)
     private List<Facture> factures;

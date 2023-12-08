@@ -1,24 +1,37 @@
-/*const navbarMenu = document.querySelector(".navbar .links");*/
-const hamburgerBtn = document.querySelector(".hamburger-btn");
-const hideMenuBtn = navbarMenu.querySelector(".close-btn");
+
 const showPopupBtn = document.querySelector(".logout-link");
 const formPopup = document.querySelector(".form-popup");
 const hidePopupBtn = formPopup.querySelector(".close-btn");
 const signupLoginLink = formPopup.querySelectorAll(".bottom-link a");
 
 
-// Afficher la fenêtre contextuelle de connexion lors du chargement de la page
+// Récupérer la référence des éléments input par leurs id
+const utilisateurField = document.getElementById("utilisateur");
+const passwordField = document.getElementById("passwordField");
+const form = document.getElementById("loginForm");
+loginButton.addEventListener("click", () =>{
+    const utilisateurValue = utilisateurField.value;
+    const passwordValue = passwordField.value;
+
+    console.log("Email:", utilisateurValue);
+    console.log("Mot de Passe:", passwordValue);
+
+    // if(emailValue.match() && passwordValue.match()) {
+    //
+    //     container = {
+    //         identifier: emailValue,
+    //         password: passwordValue
+    //     };
+    //
+    //     const containerStr = JSON.stringify(container);
+    //     // TODO: envoyer "containerStr" au serveur java.
+    // };
+});
+
 document.addEventListener("DOMContentLoaded", () => {
     showPopupBtn.click();
-});
-// Afficher le menu mobile
-/*hamburgerBtn.addEventListener("click", () => {
-    navbarMenu.classList.toggle("show-menu");
-});
 
-// Masquer le menu mobile
-hideMenuBtn.addEventListener("click", () =>  hamburgerBtn.click());*/
-
+});
 // Afficher la fenêtre contextuelle de connexion
 showPopupBtn.addEventListener("click", () => {
     document.body.classList.toggle("show-popup");
