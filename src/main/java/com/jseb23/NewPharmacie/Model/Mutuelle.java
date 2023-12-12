@@ -29,11 +29,10 @@ public class Mutuelle
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "idInformations")
+
     Informations informations;
 
-
     @OneToMany(mappedBy = "mutuelle")
-    @JsonBackReference
     private List<Patient> listPatients;
 
 

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!-- Website - www.codingnepalweb.com -->
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire</title>
+    <link rel="stylesheet" href="formulaireAjoutPatient.css">
+    <!-- Fontawesome CDN Link For Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+</head>
+<body>
+<form action="thank-you.html">
+    <h2>Nouveau Patient</h2>
+
+<!--    <div class="form-group gender">-->
+<!--        <label for="gender">Genre</label>-->
+<!--        <select id="gender">-->
+<!--            <option value="" selected disabled>Selectionnez le genre</option>-->
+<!--            <option value="Male">Mr</option>-->
+<!--            <option value="Female">Mme</option>-->
+<!--            <option value="Other">Autre</option>-->
+<!--        </select>-->
+<!--    </div>-->
+
+    <div class="form-group name">
+        <label for="nom">Nom</label>
+        <input type="text" id="Nom" placeholder="Entrez le Nom">
+    </div>
+    <div class="form-group prenom">
+        <label for="prenom">Prénom</label>
+        <input type="text" id="Prenom" placeholder="Entrez le prénom">
+    </div>
+    <div class="form-group adresse">
+        <label for="adresse">Adresse</label>
+        <input type="text" id="adresse" placeholder="Entrez votre l'adresse">
+    </div>
+    <div class="form-group date">
+        <label for="date">Date de naissance</label>
+        <input type="date" id="date" placeholder="Selectionnez date">
+    </div>
+    <div class="form-group telephone">
+        <label for="telephone">Téléphone</label>
+        <input type="text" id="telephone" placeholder="Entrez le téléphone">
+    </div>
+    <div class="form-group mail">
+        <label for="mail">Email</label>
+        <input type="email" id="mail" placeholder="Entrez l'email">
+    </div>
+    <div class="form-group medecinTraitant">
+        <label for="medecinTraitant">Médecin traitant</label>
+        <select id="medecinTraitant"></select>
+    </div>
+    <div class="form-group mutuelle">
+        <label for="mutuelle">Mutuelle</label>
+        <input type="email" id="mutuelle" placeholder="Entrez l'email">
+    </div>
+<!--    <div class="form-group password">-->
+<!--        <label for="password">Password</label>-->
+<!--        <input type="password" id="password" placeholder="Enter your password">-->
+<!--        <i id="pass-toggle-btn" class="fa-solid fa-eye"></i>-->
+<!--    </div>-->
+
+
+    <div class="form-group submit-btn">
+        <input type="submit" value="Enregistrement">
+    </div>
+</form>
+
+<script src="formulaireAjoutPatient.js"></script>
+</body>
+</html>

@@ -1,6 +1,9 @@
 package com.jseb23.NewPharmacie.Model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jseb23.NewPharmacie.Utilisateurs.Utilisateurs;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -47,15 +50,13 @@ public class Informations
     @Column(length = 30)
     String mail;
 
-    @JsonBackReference
+/*===================== MAPPING ====================*/
     @OneToMany(mappedBy = "informations")
     List<Docteur> docteurs;
 
-    @JsonBackReference
     @OneToMany(mappedBy = "informations")
     List<Mutuelle> listeMutuelle;
 
-    @JsonBackReference
     @OneToMany(mappedBy = "informations")
     List<Patient> listePatient;
 

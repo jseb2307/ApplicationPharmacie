@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 import com.jseb23.NewPharmacie.Model.*;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
@@ -17,7 +18,7 @@ import java.util.List;
 @ToString
 @Data
 @Entity
-
+@Accessors(chain = true)  // Utilisez cette annotation pour personnaliser le nom du getter
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,20 +41,16 @@ public class Patient {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "idInformations")
-    @JsonManagedReference
     Informations informations;
 
     @ManyToOne
     @JoinColumn(name = "idMutuelle")
-    @JsonIgnore
     Mutuelle mutuelle;
 
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
-    @JsonBackReference
     List<Ordonnance> listOrdonnances;
 
     @ManyToMany
-    @JsonIgnore
     @JoinTable(
             name = "patient_docteur",
             joinColumns = @JoinColumn(name = "idPatient"),
@@ -61,7 +58,6 @@ public class Patient {
     )
     List<Docteur> listDocteurs;
 
-    @JsonManagedReference
     @OneToOne(mappedBy = "patient", cascade = CascadeType.ALL)
     Panier panier;
 

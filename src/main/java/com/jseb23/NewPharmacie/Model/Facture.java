@@ -23,6 +23,7 @@ public class Facture
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     LocalDate dateFacture;
 
+
     @Column(length = 6)
     Double montantTotal;
 

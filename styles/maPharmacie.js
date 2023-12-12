@@ -47,4 +47,49 @@ signupLoginLink.forEach(link => {
         formPopup.classList[link.id === 'signup-link' ? 'add' : 'remove']("show-signup");
     });
 });
+// ======================= FORMULAIRE AJOUT PATIENT =================
+
+document.addEventListener("DOMContentLoaded", function () {
+    const overlay = document.getElementById("overlay");
+    const modal = document.getElementById("myModal");
+    const modalContent = document.getElementById("modalContent");
+    const openPatientFormBtn = document.getElementById("lienAjoutClient");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+
+    openPatientFormBtn.addEventListener("click", function () {
+        loadForm("formulaireAjoutPatient.html");
+    });
+
+    closeModalBtn.addEventListener("click", function () {
+        closeModal();
+    });
+
+    overlay.addEventListener("click", function () {
+        closeModal();
+    });
+
+    function loadForm(formFile) {
+        // Charger le contenu du formulaire depuis le fichier HTML
+        fetch(formFile)
+            .then(response => response.text())
+            .then(html => {
+                modalContent.innerHTML = html;
+                showModal();
+            })
+            .catch(error => console.error("Erreur de chargement du formulaire:", error));
+    }
+
+    function showModal() {
+        overlay.style.display = "block";
+        modal.style.display = "block";
+    }
+
+    function closeModal() {
+        overlay.style.display = "none";
+        modal.style.display = "none";
+        modalContent.innerHTML = ""; // Effacer le contenu du formulaire
+    }
+});
+
+
 

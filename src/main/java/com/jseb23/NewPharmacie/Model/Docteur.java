@@ -1,6 +1,7 @@
 package com.jseb23.NewPharmacie.Model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -26,17 +27,16 @@ public class Docteur {
     String prenomDocteur;
 
     /*===================== MAPPING =====================*/
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "idInformations")
     Informations informations;
 
-    @JsonBackReference
     @ManyToMany(mappedBy = "listDocteurs", cascade = CascadeType.ALL)
     List<SpecialiteDocteur> listSpecialiteDocteurs;
 
     @OneToMany(mappedBy = "docteur", cascade = CascadeType.ALL)
     List<Ordonnance> listOrdonnances;
-
 
     @ManyToMany(mappedBy = "listDocteurs")
     private List<Patient> listPatients;
