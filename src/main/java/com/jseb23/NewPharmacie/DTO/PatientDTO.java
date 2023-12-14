@@ -10,6 +10,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.jseb23.NewPharmacie.DTO.DocteurDTO.getDocteursDTO;
+
 @Data
 @AllArgsConstructor
 public class PatientDTO
@@ -25,12 +27,13 @@ public class PatientDTO
 
     // Nom et prénom du docteur
 
-    List<String> nomsPrenomsDocteurs;
-//    String nomDocteur;
+   List<DocteurDTO> listDocteurs;
+
 //    String prenomDocteur;
 
     // Nom de la mutuelle
     String nomMutuelle;
+    Long idMutuelle;
 
 
 /*======================== LISTE NOM ET PRENOM MEDECINS PATIENT===================*/
@@ -52,8 +55,9 @@ public class PatientDTO
                 patient.getDateDeNaissance(),
                 patient.getNumeroSecuPatient(),
                 InformationsDTO.mapInformationsToDTO(patient.getInformations()),
-                getNomsPrenomsDocteurs(patient.getListDocteurs()),
-                patient.getMutuelle() != null ? patient.getMutuelle().getNomMutuelle() : null
+                getDocteursDTO(patient.getListDocteurs()),
+                patient.getMutuelle() != null ? patient.getMutuelle().getNomMutuelle() : null,
+                patient.getMutuelle() != null ? patient.getMutuelle().getIdMutuelle() : null
                 // Ajoutez d'autres propriétés si nécessaire
         );
     }

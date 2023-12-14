@@ -1,5 +1,6 @@
 package com.jseb23.NewPharmacie.Model;
 
+import com.fasterxml.classmate.AnnotationOverrides;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -25,6 +26,7 @@ public class Docteur {
 
     @Column(length = 20, nullable = false)
     String prenomDocteur;
+
 
     /*===================== MAPPING =====================*/
 

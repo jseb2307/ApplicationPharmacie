@@ -4,7 +4,7 @@ import com.jseb23.NewPharmacie.DTO.PatientDTO;
 import com.jseb23.NewPharmacie.Model.Patient;
 import com.jseb23.NewPharmacie.Service.PatientService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

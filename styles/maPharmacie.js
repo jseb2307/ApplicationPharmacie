@@ -5,6 +5,7 @@ const hidePopupBtn = formPopup.querySelector(".close-btn");
 const signupLoginLink = formPopup.querySelectorAll(".bottom-link a");
 
 
+
 // Récupérer la référence des éléments input par leurs id
 const utilisateurField = document.getElementById("utilisateur");
 const passwordField = document.getElementById("passwordField");
@@ -90,6 +91,37 @@ document.addEventListener("DOMContentLoaded", function () {
         modalContent.innerHTML = ""; // Effacer le contenu du formulaire
     }
 });
+//========================== REMPLISSAGE LISTE DE DOCTEURS======================
 
-
-
+// document.addEventListener("DOMContentLoaded", function() {
+//     const medecinTraitantSelect = document.getElementById("medecinTraitant");
+//
+//     // Vérifiez si l'élément est trouvé avant d'ajouter des options
+//     if (medecinTraitantSelect) {
+//         // Appel à l'endpoint Spring pour récupérer les noms des médecins
+//         fetch("http://localhost:8080/docteur/all")
+//             .then(response => response.json())
+//             .then(data => {
+//                 console.log("Données reçues du serveur:", data);
+//                 if (data && data.length > 0) {
+//                     // Remplir la combobox avec les noms des médecins
+//                     const options = data.map(docteur => {
+//                         const option = document.createElement("option");
+//                         option.value = docteur.idDocteur;
+//                         option.text = docteur.nomDocteur + " " + docteur.prenomDocteur;
+//                         return option;
+//                     });
+//
+//                     options.forEach(option => {
+//                         medecinTraitantSelect.appendChild(option);
+//                         console.log("Valeur de l'option :", option);
+//                     });
+//                 } else {
+//                     console.error("La réponse du backend est vide ou n'est pas une liste.");
+//                 }
+//             })
+//             .catch(error => console.error("Erreur lors de la récupération des noms des médecins:", error));
+//     } else {
+//         console.error("L'élément avec l'ID 'medecinTraitant' n'a pas été trouvé.");
+//     }
+//});
