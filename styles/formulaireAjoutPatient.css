@@ -16,6 +16,7 @@ body {
 }
 .modal{
     width: 500px;
+    height: auto;
 }
 
 form {
