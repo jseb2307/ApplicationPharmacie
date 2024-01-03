@@ -10,71 +10,141 @@
     <link rel="stylesheet" href="maPharmacie.css">
 </head>
 <body>
-<!---------------------- POP UP LOGIN ---------------------->
-<div class="blur-bg-overlay"></div>
-<div class="form-popup">
-    <span class="close-btn material-symbols-rounded">close</span>
-    <div class="form-box login">
-        <div class="form-details">
-            <h2>Content de vous revoir</h2>
-            <p>Veuillez vous connecter en utilisant vos informations personnelles pour rester en contact avec nous.</p>
-        </div>
-        <div class="form-content">
-            <h2>SE CONNECTER</h2>
-            <form action="#">
-                <div class="input-field">
-                    <input type="text" id="utilisateur" required>
-                    <label for="utilisateur">Utilisateur</label>
-                </div>
-                <div class="input-field">
-                    <input type="password" id="passwordField" required>
-                    <label for="passwordField">Mot de Passe</label>
-                </div>
-                <a href="#" class="forgot-pass-link">Mot de passe oublié?</a>
-                <button type="submit" id="loginButton">Se connecter</button>
-            </form>
-            <div class="bottom-link">
-                Vous n'avez pas de compte ?
-                <a href="#" id="signup-link">S'inscrire</a>
-            </div>
-        </div>
-    </div>
-    <div class="form-box signup">
-        <div class="form-details">
-            <h2>Créer un compte</h2>
-            <p>Veuillez vous inscrire en utilisant vos informations personnelles.</p>
-        </div>
-        <div class="form-content">
-            <h2>SIGNUP</h2>
-            <form action="#">
-                <div class="input-field">
-                    <input type="text" required>
-                    <label>Entrer votre email</label>
-                </div>
-                <div class="input-field">
-                    <input type="password" required>
-                    <label>Créer un mot de passe</label>
-                </div>
-                <div class="policy-text">
-                    <input type="checkbox" id="policy">
-                    <label for="policy">
-                        I agree the
-                        <a href="#" class="option">Termes et conditions</a>
-                    </label>
-                </div>
-                <button type="submit">S'inscrire</button>
-            </form>
-            <div class="bottom-link">
-                Vous avez déjà un compte?
-                <a href="#" id="login-link">Se connecter</a>
-            </div>
-        </div>
-    </div>
-</div>
+<!---------------------- GESTION LOGIN ---------------------->
+<section class="sectionLogin" id="loginSection">
+    <form action="#" method="post">
+        <h2 id="connectionTitle">Connection</h2>
+        <fieldset>
+            <legend id="legendeUtilisateur">Utilisateur</legend>
+            <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Votre nom d'utilisateur"
+                    required
+            />
+        </fieldset>
+        <fieldset>
+            <legend id="legendeMotDePasse">Mot de passe</legend>
+            <input
+                    type="password"
+                    id="motDePasse"
+                    name="motDePasse"
+                    placeholder="Votre mot de passe"
+                    required
+            />
+        </fieldset>
+        <label for="acceptation">
+            <input type="checkbox" id="acceptation" name="acceptation" required />
+            Accepter les conditions
+        </label>
+        <a href="#" id="mdp" onclick="toggleSection('motDePasseOublieSection')"
+        >Mot de passe oublié ?</a
+        >
+        <button type="button" id="valider" onclick="handleLogin()">Valider</button>
+        <a
+                href="#"
+                id="inscription"
+                onclick="toggleSection('inscriptionSection')"
+        >S'inscrire
+        </a>
+    </form>
+</section>
 
+<section class="sectionLogin hidden" id="inscriptionSection">
+    <form action="#" method="post">
+        <h2 id="inscriptionTitle">Inscription</h2>
+        <fieldset>
+            <legend id="legendeNom">Nom</legend>
+            <input
+                    type="text"
+                    id="nom"
+                    name="nom"
+                    placeholder="Votre nom"
+                    required
+            />
+        </fieldset>
+        <fieldset>
+            <legend id="legendePrenom">Prénom</legend>
+            <input
+                    type="text"
+                    id="prenom"
+                    name="prenom"
+                    placeholder="Votre prénom"
+                    required
+            />
+        </fieldset>
+        <fieldset>
+            <legend id="legendeAdresse">Adresse</legend>
+            <input
+                    type="text"
+                    id="adresse"
+                    name="adresse"
+                    placeholder="Votre adresse"
+                    required
+            />
+        </fieldset>
+        <div id="resultsDropdown"></div>
+        <fieldset>
+            <legend id="legendeTelephone">Téléphone</legend>
+            <input
+                    type="tel"
+                    id="telephone"
+                    name="telephone"
+                    placeholder="Votre téléphone"
+                    required
+            />
+        </fieldset>
+
+        <fieldset>
+            <legend id="legendeEmail">Email</legend>
+            <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Votre email"
+                    required
+            />
+        </fieldset>
+        <fieldset>
+            <legend id="legendeMotDePasseInscription">Mot de passe</legend>
+            <input
+                    type="text"
+                    id="motDePasseInscription"
+                    name="motDePasseInscription"
+                    placeholder="Votre mot de passe"
+                    required
+            />
+        </fieldset>
+        <button id="souscrireBtn">Souscrire</button>
+        <a href="#" id="retourOublie" onclick="toggleSection('loginSection')"
+        >Retour à la connexion</a
+        >
+    </form>
+</section>
+
+<section class="sectionLogin hidden" id="motDePasseOublieSection">
+    <form action="#" method="post">
+        <h2 id="motDePasseOublieTitle">Mot de passe oublié</h2>
+        <fieldset>
+            <legend id="legendeEmailOublie">Email</legend>
+            <input
+                    type="email"
+                    id="emailOublie"
+                    name="emailOublie"
+                    placeholder="Votre email"
+                    required
+            />
+        </fieldset>
+        <button id="envoyerBtn">Envoyer</button>
+        <a href="#" id="retourOublie" onclick="toggleSection('loginSection')"
+        >Retour à la connexion</a
+        >
+    </form>
+</section>
 <!---------- SIDEBAR------------------>
 
-<aside class="sidebar">
+<aside class="sidebar blurred-sidebar hidden" id="sidebar">
     <div class="logo">
         <img src="logo-pharmacy.pgn" alt="logo">
         <h2>SPARADRAP</h2>

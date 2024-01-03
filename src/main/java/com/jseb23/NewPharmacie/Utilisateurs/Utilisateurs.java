@@ -43,6 +43,15 @@ public class Utilisateurs
     @NotEmpty
     String motDePasseUtilisateur;
 
+
+    String motDePasseProvisoire;
+
+    @NotNull
+    @NotBlank
+    String role;
+
+
+
     /*========================= MAPPING ==========================*/
 
 

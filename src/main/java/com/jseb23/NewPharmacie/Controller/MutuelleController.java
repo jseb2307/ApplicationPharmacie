@@ -1,16 +1,13 @@
 package com.jseb23.NewPharmacie.Controller;
 
 
-import com.jseb23.NewPharmacie.DTO.DocteurDTO;
 import com.jseb23.NewPharmacie.DTO.InformationsDTO;
 import com.jseb23.NewPharmacie.DTO.MutuelleDTO;
-import com.jseb23.NewPharmacie.Model.Docteur;
 import com.jseb23.NewPharmacie.Model.Informations;
 import com.jseb23.NewPharmacie.Model.Mutuelle;
 import com.jseb23.NewPharmacie.Service.InformationsService;
 import com.jseb23.NewPharmacie.Service.MutuelleService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +16,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.jseb23.NewPharmacie.DTO.DocteurDTO.mapDocteurToDTO;
 import static com.jseb23.NewPharmacie.DTO.MutuelleDTO.mapMutuelleToDTO;
 
 @RestController

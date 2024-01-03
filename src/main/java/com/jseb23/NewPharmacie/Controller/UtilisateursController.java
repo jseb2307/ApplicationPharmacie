@@ -3,7 +3,9 @@ package com.jseb23.NewPharmacie.Controller;
 import com.jseb23.NewPharmacie.Service.UtilisateursService;
 import com.jseb23.NewPharmacie.Utilisateurs.Utilisateurs;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,14 +18,16 @@ public class UtilisateursController {
 
 
     private final UtilisateursService utilisateursService;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @GetMapping("/{id}")
     public ResponseEntity<Utilisateurs> getUtilisateursById(@PathVariable Long id) {
         Optional<Utilisateurs> utilisateur = utilisateursService.findById(id);
 
         return utilisateur.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
+
 
     @GetMapping("/all")
     public ResponseEntity<List<Utilisateurs>> getAllUtilisateurs() {
@@ -37,10 +41,15 @@ public class UtilisateursController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Utilisateurs> createUtilisateur(@RequestBody Utilisateurs utilisateur) {
+    public ResponseEntity<Utilisateurs> createUtilisateur(@RequestBody Utilisateurs utilisateur)
+    {
+        // Hacher le mot de passe avant de l'enregistrer
+        String hashedPassword = passwordEncoder.encode(utilisateur.getMotDePasseUtilisateur());
+        utilisateur.setMotDePasseUtilisateur(hashedPassword);
+
         Utilisateurs createUtilisateur = utilisateursService.save(utilisateur);
 
-        return ResponseEntity.ok(createUtilisateur);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createUtilisateur);
     }
 
     @PutMapping("/update/{id}")

@@ -1,10 +1,13 @@
 package com.jseb23.NewPharmacie.Service;
 
 import com.jseb23.NewPharmacie.Model.Mutuelle;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
+@Service
+@AllArgsConstructor
 public class MutuelleServiceImpl implements MutuelleService
 {
 
