@@ -1,10 +1,5 @@
 package com.jseb23.NewPharmacie.Model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.jseb23.NewPharmacie.Utilisateurs.Utilisateurs;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -65,7 +60,7 @@ public class Informations
     Pharmacie pharmacie;
 
     @OneToMany(mappedBy = "informations")
-    List<Utilisateurs> listeUtilisateurs;
+    List<Utilisateur> listeUtilisateurs;
 
 
 }

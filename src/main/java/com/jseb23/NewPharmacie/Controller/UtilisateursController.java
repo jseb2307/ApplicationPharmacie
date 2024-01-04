@@ -1,81 +1,56 @@
 package com.jseb23.NewPharmacie.Controller;
 
-import com.jseb23.NewPharmacie.Service.UtilisateursService;
-import com.jseb23.NewPharmacie.Utilisateurs.Utilisateurs;
+import com.jseb23.NewPharmacie.DTO.AuthentificationDTO;
+import com.jseb23.NewPharmacie.Model.Utilisateur;
+import com.jseb23.NewPharmacie.Security.JwtService;
+import com.jseb23.NewPharmacie.Service.UtilisateurService;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
-@RestController
-@RequestMapping("/utilisateurs")
+@Slf4j
 @AllArgsConstructor
+@NoArgsConstructor
+@RestController
+@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 public class UtilisateursController {
 
+    private AuthenticationManager authenticationManager;
+    private UtilisateurService utilisateurService;
+    private JwtService jwtService;
 
-    private final UtilisateursService utilisateursService;
-    private final BCryptPasswordEncoder passwordEncoder;
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Utilisateurs> getUtilisateursById(@PathVariable Long id) {
-        Optional<Utilisateurs> utilisateur = utilisateursService.findById(id);
-
-        return utilisateur.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    @PostMapping(path = "inscription")
+    public void inscription(@RequestBody Utilisateur utilisateur) {
+        log.info("Inscription");
+        this.utilisateurService.inscription(utilisateur);
     }
 
+    @PostMapping(path = "activation")
+    public void activation(@RequestBody Map<String, String> activation) {
+        this.utilisateurService.activation(activation);
+    }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<Utilisateurs>> getAllUtilisateurs() {
-        List<Utilisateurs> utilisateurs = utilisateursService.findAll();
+    @PostMapping(path = "connexion")
+    public Map<String, String> connexion(@RequestBody AuthentificationDTO authentificationDTO) {
+        final Authentication authenticate = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(authentificationDTO.username(), authentificationDTO.password())
+        );
 
-        if (!utilisateurs.isEmpty()) {
-            return ResponseEntity.ok(utilisateurs);
-        } else {
-            return ResponseEntity.noContent().build();
+        if(authenticate.isAuthenticated()) {
+            return this.jwtService.generate(authentificationDTO.username());
         }
+        return null;
     }
-
-    @PostMapping("/create")
-    public ResponseEntity<Utilisateurs> createUtilisateur(@RequestBody Utilisateurs utilisateur)
-    {
-        // Hacher le mot de passe avant de l'enregistrer
-        String hashedPassword = passwordEncoder.encode(utilisateur.getMotDePasseUtilisateur());
-        utilisateur.setMotDePasseUtilisateur(hashedPassword);
-
-        Utilisateurs createUtilisateur = utilisateursService.save(utilisateur);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(createUtilisateur);
-    }
-
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Utilisateurs> updateUtilisateur(@PathVariable Long id, @RequestBody Utilisateurs utilisateur) {
-        Optional<Utilisateurs> existingPatient = utilisateursService.findById(id);
-
-        if (existingPatient.isPresent()) {
-            utilisateur.setIdUtilisateur(id);
-            Utilisateurs updatedPatient = utilisateursService.save(utilisateur);
-            return ResponseEntity.ok(updatedPatient);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deletePatient(@PathVariable Long id) {
-        Optional<Utilisateurs> existingPatient = utilisateursService.findById(id);
-
-        if (existingPatient.isPresent()) {
-            utilisateursService.deleteById(id);
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
 }
-
