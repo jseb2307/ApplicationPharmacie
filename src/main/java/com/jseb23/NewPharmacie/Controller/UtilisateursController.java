@@ -31,24 +31,24 @@ public class UtilisateursController {
     private UtilisateurService utilisateurService;
     private JwtService jwtService;
 
-    @PostMapping(path = "inscription")
+    @PostMapping(path = "/inscription")
     public void inscription(@RequestBody Utilisateur utilisateur) {
         log.info("Inscription");
         this.utilisateurService.inscription(utilisateur);
     }
 
-    @PostMapping(path = "activation")
+    @PostMapping(path = "/activation")
     public void activation(@RequestBody Map<String, String> activation) {
         this.utilisateurService.activation(activation);
     }
 
-    @PostMapping(path = "connexion")
+    @PostMapping(path = "/connexion")
     public Map<String, String> connexion(@RequestBody AuthentificationDTO authentificationDTO) {
         final Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authentificationDTO.username(), authentificationDTO.password())
         );
 
-        if(authenticate.isAuthenticated()) {
+        if(authenticate.isAuthenticated()) { // si l'utilisateur est identifié génère un tocken
             return this.jwtService.generate(authentificationDTO.username());
         }
         return null;

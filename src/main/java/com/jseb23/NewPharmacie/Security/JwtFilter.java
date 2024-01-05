@@ -5,6 +5,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +17,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Service
+@NoArgsConstructor
+
 public class JwtFilter extends OncePerRequestFilter {
 
     private UtilisateurService utilisateurService;
@@ -32,14 +36,14 @@ public class JwtFilter extends OncePerRequestFilter {
         boolean isTokenExpired = true;
 
         // Bearer eyJhbGciOiJIUzI1NiJ9.eyJub20iOiJBY2hpbGxlIE1CT1VHVUVORyIsImVtYWlsIjoiYWNoaWxsZS5tYm91Z3VlbmdAY2hpbGxvLnRlY2gifQ.zDuRKmkonHdUez-CLWKIk5Jdq9vFSUgxtgdU1H2216U
-        final String authorization = request.getHeader("Authorization");
+        final String authorization = request.getHeader("Authorization");// header de l'autorisation
         if(authorization != null && authorization.startsWith("Bearer ")){
-            token = authorization.substring(7);
-            isTokenExpired = jwtService.isTokenExpired(token);
+            token = authorization.substring(7); // recupere le token a partir de caractere 7
+            isTokenExpired = jwtService.isTokenExpired(token);// vérification expiration token
             username = jwtService.extractUsername(token);
         }
 
-        if(!isTokenExpired && username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if(!isTokenExpired && username != null && SecurityContextHolder.getContext().getAuthentication() == null) { // si y a pas d'authentification (admin)
             UserDetails userDetails = (UserDetails) utilisateurService.loadUserByUsername(username);
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);

@@ -17,7 +17,7 @@ public class NotificationService
         SimpleMailMessage message = new SimpleMailMessage();
 
         message.setFrom("no-reply@chillo.tech");
-        message.setTo(validation.getUtilisateur().getMail()); // envoie au mail de l'utilisateur
+        message.setTo(validation.getUtilisateur().getEmail()); // envoie au mail de l'utilisateur
         message.setSubject("Votre code d'activation"); // code activation
 
         String texte = String.format( // formatage message envoyé

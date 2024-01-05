@@ -28,20 +28,21 @@ public class UtilisateurService implements UserDetailsService
 
     public void inscription(Utilisateur utilisateur) {
 
-        if(!utilisateur.getMail().contains("@")) {
+        if(!utilisateur.getEmail().contains("@")) {
             throw  new RuntimeException("Votre mail invalide");
         }
-        if(!utilisateur.getMail().contains(".")) {
+        if(!utilisateur.getEmail().contains(".")) {
             throw  new RuntimeException("Votre mail invalide");
         }
 
-        Optional<Utilisateur> utilisateurOptional = this.utilisateurRepository.findByEmail(utilisateur.getMail()); // recherche mail déjà utilisé
+        Optional<Utilisateur> utilisateurOptional = this.utilisateurRepository.findByEmail(utilisateur.getEmail()); // recherche mail déjà utilisé
         if(utilisateurOptional.isPresent()) {
             throw  new RuntimeException("Votre mail est déjà utilisé");
         }
         String mdpCrypte = this.passwordEncoder.encode(utilisateur.getMotDePasseUtilisateur()); // encodage mot de passe
         utilisateur.setMotDePasseUtilisateur(mdpCrypte);
 
+        // ================== Voir pour mettre le role dans la base et le récupérer pour contrôle =================
         Role roleUtilisateur = new Role(); // -------------------Role de l'utilisateur -----------
         roleUtilisateur.setLibelle(TypeDeRole.UTILISATEUR);
         utilisateur.setRole(roleUtilisateur);
@@ -60,6 +61,7 @@ public class UtilisateurService implements UserDetailsService
         this.utilisateurRepository.save(utilisateurActiver);
     }
 
+    /* ================== RECHERCHER l'UTILISATEUR DANS LA BASE =============================================================*/
     @Override
     public Utilisateur loadUserByUsername(String username) throws UsernameNotFoundException {
         return this.utilisateurRepository

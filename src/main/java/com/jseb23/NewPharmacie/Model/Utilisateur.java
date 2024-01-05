@@ -1,7 +1,6 @@
 package com.jseb23.NewPharmacie.Model;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -54,7 +53,7 @@ public class Utilisateur implements UserDetails
     @NotNull
     @NotBlank
     @NotEmpty
-    String mail;
+    String email;
 
     boolean actif = false;
 
@@ -75,7 +74,7 @@ public class Utilisateur implements UserDetails
 
     @Override
     public String getPassword() {
-        return this.getMail();
+        return this.getEmail();
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.jseb23.NewPharmacie.Security;
 
+import com.jseb23.NewPharmacie.Service.UtilisateurService;
+import lombok.NoArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,16 +21,19 @@ import static org.springframework.http.HttpMethod.POST;
 
 @Configuration
 @EnableWebSecurity
+
 public class ConfigurationSecuriteApplication{
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final JwtFilter jwtFilter;
     private final UserDetailsService userDetailsService;
+    private final JwtFilter jwtFilter;
+
     public ConfigurationSecuriteApplication(BCryptPasswordEncoder bCryptPasswordEncoder, JwtFilter jwtFilter, UserDetailsService userDetailsService) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.jwtFilter = jwtFilter;
         this.userDetailsService = userDetailsService;
     }
 
+    /* ======================== FILTRES DE CONNEXION ===========================================================*/
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return
@@ -37,26 +42,29 @@ public class ConfigurationSecuriteApplication{
                         .authorizeHttpRequests(
                                 authorize ->
                                         authorize
-                                                .requestMatchers(POST,"/inscription").permitAll()
-                                                .requestMatchers(POST,"/activation").permitAll()
-                                                .requestMatchers(POST,"/connexion").permitAll()
+                                                .requestMatchers(POST,"inscription").permitAll()
+                                                .requestMatchers(POST,"activation").permitAll()
+                                                .requestMatchers(POST,"connexion").permitAll()
                                                 .anyRequest().authenticated()
                         )
+                        // session
                         .sessionManagement(httpSecuritySessionManagementConfigurer ->
                                 httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                         )
-                        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class) // vérifie si il connait l'utilisateur
                         .build();
     }
 
+    /* ========= AUTHENTIFICATION DE L'UTILISATEUR ===================================================================*/
     @Bean
     public AuthenticationManager authenticationManager (AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+/* ============================ AUTHENTIFICATION S'APPUYANT SUR LA BASE ================================================*/
     @Bean
-    public AuthenticationProvider authenticationProvider () {
+    public AuthenticationProvider authenticationProvider (UserDetailsService userDetailsService) {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder);
