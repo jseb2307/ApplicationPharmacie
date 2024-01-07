@@ -50,7 +50,7 @@ public class Patient {
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
     List<Ordonnance> listOrdonnances;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "patient_docteur",
             joinColumns = @JoinColumn(name = "idPatient"),

@@ -1,7 +1,6 @@
 package com.jseb23.NewPharmacie.Security;
 
-import com.jseb23.NewPharmacie.Service.UtilisateurService;
-import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -16,16 +16,22 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
+
+import java.util.Collections;
+import java.util.List;
 
 import static org.springframework.http.HttpMethod.POST;
 
 @Configuration
 @EnableWebSecurity
-
+@Slf4j
 public class ConfigurationSecuriteApplication{
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserDetailsService userDetailsService;
     private final JwtFilter jwtFilter;
+
 
     public ConfigurationSecuriteApplication(BCryptPasswordEncoder bCryptPasswordEncoder, JwtFilter jwtFilter, UserDetailsService userDetailsService) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -35,31 +41,29 @@ public class ConfigurationSecuriteApplication{
 
     /* ======================== FILTRES DE CONNEXION ===========================================================*/
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return
-                httpSecurity
-                        .csrf(AbstractHttpConfigurer::disable)
-                        .authorizeHttpRequests(
-                                authorize ->
-                                        authorize
-                                                .requestMatchers(POST,"inscription").permitAll()
-                                                .requestMatchers(POST,"activation").permitAll()
-                                                .requestMatchers(POST,"connexion").permitAll()
-                                                .anyRequest().authenticated()
-                        )
-                        // session
-                        .sessionManagement(httpSecuritySessionManagementConfigurer ->
-                                httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
-                        )
-                        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class) // vérifie si il connait l'utilisateur
-                        .build();
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        log.info("dans le filtre");
+        return http
+                .csrf(AbstractHttpConfigurer::disable) // Disable CSRF
+                .authorizeHttpRequests(authorize ->
+                                authorize
+                                        .requestMatchers(new AntPathRequestMatcher("/inscription", "POST")).permitAll()// accepte l'inscription sans authentification
+                                        .requestMatchers(new AntPathRequestMatcher("/activation", "POST")).permitAll()
+                                         .requestMatchers(new AntPathRequestMatcher("/connexion", "POST")).permitAll()
+                                        .anyRequest().authenticated()) // les autres requetes doivent etre identifiées
+                .sessionManagement(httpSecuritySessionManagementConfigurer ->
+                        httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Set session policy to stateless
+                )
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class) // vérifie si il connait l'utilisateur
+                .build();
     }
 
     /* ========= AUTHENTIFICATION DE L'UTILISATEUR ===================================================================*/
     @Bean
     public AuthenticationManager authenticationManager (AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        log.info("dans authenticationManager");
         return authenticationConfiguration.getAuthenticationManager();
+
     }
 
 /* ============================ AUTHENTIFICATION S'APPUYANT SUR LA BASE ================================================*/
@@ -68,6 +72,7 @@ public class ConfigurationSecuriteApplication{
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder);
+        log.info("dans authenticationProvider");
         return daoAuthenticationProvider;
     }
 

@@ -5,7 +5,11 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -18,4 +22,9 @@ public class Role {
 
     @Enumerated(EnumType.STRING)
     TypeDeRole libelle;
+
+
+    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT) //Hibernate utilise une seule requête subselect pour charger l'intégralité de la collection utilisateurs.
+    private List<Utilisateur> utilisateurs = new ArrayList<>();
 }

@@ -157,4 +157,39 @@ function  handleLogin()
     console.log("Utilisateur:", username);
     console.log("Mot de passe:", password);
     console.log("Acceptation des conditions:", acceptation);
+
+    if (!acceptation) {
+        console.error("Veuillez accepter les conditions d'utilisation.");
+        return;
+    }
+
+
+    fetch('http://localhost:8080/connexion', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+
+        },
+        credentials: 'include',
+        mode: 'no-cors',
+        body: JSON.stringify({
+            username: username,
+            password: password,
+
+        }),
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json(); // Cette ligne parse le JSON du corps de la réponse
+        })
+        .then(data => {
+            console.log('Réponse du serveur:', data);
+            // Gérez la réponse du back-end
+        })
+        .catch(error => {
+            console.error('Erreur lors de la requête:', error);
+            // Gérez les erreurs
+        });
 }

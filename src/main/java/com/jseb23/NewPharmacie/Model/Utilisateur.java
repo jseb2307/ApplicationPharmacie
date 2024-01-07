@@ -64,8 +64,12 @@ public class Utilisateur implements UserDetails
     @JoinColumn(name = "idInformations", referencedColumnName = "idInformations")
     Informations informations;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "roleId")
     Role role;
+
+    @OneToMany(mappedBy = "utilisateur")
+    Collection<Validation> validations;
     /*============================ METHODS ================================*/
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -74,7 +78,7 @@ public class Utilisateur implements UserDetails
 
     @Override
     public String getPassword() {
-        return this.getEmail();
+        return this.getMotDePasseUtilisateur();
     }
 
     @Override

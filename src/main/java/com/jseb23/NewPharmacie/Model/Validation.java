@@ -23,6 +23,7 @@ public class Validation
 
     /*============== MAPPING ============================*/
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "idUtilisateur")
     Utilisateur utilisateur;
 }
