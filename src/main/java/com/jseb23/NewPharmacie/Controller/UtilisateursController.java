@@ -47,9 +47,26 @@ public class UtilisateursController {
     }
 
     @PostMapping(path = "/activation")
-    public void activation(@RequestBody Map<String, String> activation) {
-        log.info("Activation");
-        this.utilisateurService.activation(activation);
+    public ResponseEntity<String> activation(@RequestBody Map<String, String> activation) {
+        try {
+            log.info("Activation");
+
+            log.debug("données activation reçues: {}", activation);
+
+            this.utilisateurService.activation(activation);
+
+            log.info("Activation a réussi");
+
+            // Retourne une réponse HTTP 200 OK avec ce message
+            return ResponseEntity.ok("Compte activé avec succès");
+
+        } catch (Exception e) {
+
+            log.error("Activation a échoué", e);
+
+            // Retourne une réponse HTTP 500 Internal Server Error avec ce message d'erreur
+            return ResponseEntity.status(500).body("Erreur lors de l'activation du compte");
+        }
     }
 
     @PostMapping(path = "/connexion")
@@ -62,24 +79,38 @@ public class UtilisateursController {
                     new UsernamePasswordAuthenticationToken(authentificationDTO.username(), authentificationDTO.password())
             );
 
-            if(authenticate.isAuthenticated())
+            /**
+             * renvoie le principal associé à l'authentification, qui peut être un objet utilisateur après une authentification réussie.
+             * En vérifiant si le principal n'est pas nul, vous vous assurez que l'authentification a réussi.
+             */
+            if (authenticate.getPrincipal() != null)
             {
+                log.info("Authentification réussie pour l'utilisateur : {}", authentificationDTO.username());
+
                 Map<String, String> tokenMap = this.jwtService.generate(authentificationDTO.username());
                 String token = tokenMap.get("bearer"); // Récupérez le token de la map
-                if (token != null) {
+
+                if (token != null)
+                {
+                    log.info("Génération du token réussie pour l'utilisateur : {}", authentificationDTO.username());
+
                     return ResponseEntity.ok().body("connexion établie, token : " + token);// récupère le token formaté
-                } else {
+                } else
+                {
+                    log.error("Erreur lors de la génération du token pour l'utilisateur : {}", authentificationDTO.username());
                     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la génération du token");
                 }
             }
         } catch (AuthenticationException e) {
-            log.error("Erreur d'authentification", e);
+            log.error("Erreur d'authentification pour l'utilisateur : {}", authentificationDTO.username(), e);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentification échouée");
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Non autorisé");
+        log.info("Non autorisé pour l'utilisateur : {}", authentificationDTO.username());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Vous n'êtes pas autorisé à vous connecter !");
     }
     //Gestion des requêtes OPTIONS
-    @RequestMapping(method = RequestMethod.OPTIONS)
-    public ResponseEntity<?> handleOptions() {
-        return ResponseEntity.ok().allow(HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT, HttpMethod.DELETE, HttpMethod.OPTIONS).build();
-    }
+//    @RequestMapping(method = RequestMethod.OPTIONS)
+//    public ResponseEntity<?> handleOptions() {
+//        return ResponseEntity.ok().allow(HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT, HttpMethod.DELETE, HttpMethod.OPTIONS).build();
+//    }
 }
