@@ -107,16 +107,26 @@
             />
         </fieldset>
         <fieldset>
-            <legend id="legendeMotDePasseInscription">Mot de passe</legend>
+            <legend id="legendeUtilisateurInscription">Nom d'utilisateur</legend>
             <input
                     type="text"
+                    id="utilisateur"
+                    name="utilisateur"
+                    placeholder="Votre nom d'utilisateur"
+                    required
+            />
+        </fieldset>
+        <fieldset>
+            <legend id="legendeMotDePasseInscription">Mot de passe</legend>
+            <input
+                    type="password"
                     id="motDePasseInscription"
                     name="motDePasseInscription"
                     placeholder="Votre mot de passe"
                     required
             />
         </fieldset>
-        <button id="souscrireBtn">Souscrire</button>
+        <button id="souscrireBtn" type="button">Souscrire</button>
         <a href="#" id="retourOublie" onclick="toggleSection('loginSection')"
         >Retour à la connexion</a
         >
@@ -136,17 +146,44 @@
                     required
             />
         </fieldset>
-        <button id="envoyerBtn">Envoyer</button>
+        <button id="envoyerBtn" onclick="motDePasseOublie()">Envoyer</button>
         <a href="#" id="retourOublie" onclick="toggleSection('loginSection')"
         >Retour à la connexion</a
         >
+    </form>
+</section>
+
+<section class="activation" id="pageActivation">
+    <form action="#" method="post">
+        <h2 id="validationTitle">Validation</h2>
+        <fieldset>
+            <legend id="legendeUtilisateurValidation">Utilisateur</legend>
+            <input
+                    type="text"
+                    id="usernameUtilisateurValidation"
+                    name="usernameUtilisateurValidation"
+                    placeholder="Votre nom d'utilisateur"
+                    required
+            />
+        </fieldset>
+        <fieldset>
+            <legend id="legendeCodeValidation">Code de validation</legend>
+            <input
+                    type="text"
+                    id="codeValidation"
+                    name="codeValidation"
+                    placeholder="Votre code de validation"
+                    required
+            />
+        </fieldset>
+        <button type="button" id="envoyerValidation" onclick="activerCompte()">Valider</button>
     </form>
 </section>
 <!---------- SIDEBAR------------------>
 
 <aside class="sidebar blurred-sidebar hidden" id="sidebar">
     <div class="logo">
-        <img src="logo-pharmacy.pgn" alt="logo">
+        <img src="../src/main/resources/images/logo-pharmacy.png" alt="logo">
         <h2>SPARADRAP</h2>
     </div>
     <ul class="links">

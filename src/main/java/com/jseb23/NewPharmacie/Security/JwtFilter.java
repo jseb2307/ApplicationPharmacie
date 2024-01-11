@@ -5,6 +5,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 
 import java.io.IOException;
+import java.util.Enumeration;
 
 @Service
 @Slf4j
@@ -41,13 +43,18 @@ public class JwtFilter extends OncePerRequestFilter {
 
         log.info("Application dans JwtFilter");
 
+
         try {
-
-
             //extrait le token de l'en-tête Authorization de la requête HTTP. Selon la convention, le token doit être préfixé par Bearer
             final String authorization = request.getHeader("Authorization");// header de l'autorisation
 
             log.info("Header d'autorisation extrait : " + authorization);
+            Enumeration<String> headerNames = request.getHeaderNames();
+            while (headerNames.hasMoreElements()) {
+                String headerName = headerNames.nextElement();
+                String headerValue = request.getHeader(headerName);
+                log.info("Header de la requête - Nom : {}, Valeur : {}", headerName, headerValue);
+            }
 
             if (authorization != null && authorization.startsWith("Bearer ")) {
                 token = authorization.substring(7); // recupere le token a partir de caractere 7

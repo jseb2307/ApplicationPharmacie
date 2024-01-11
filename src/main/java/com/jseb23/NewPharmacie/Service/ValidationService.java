@@ -4,6 +4,7 @@ import com.jseb23.NewPharmacie.Model.Utilisateur;
 import com.jseb23.NewPharmacie.Model.Validation;
 import com.jseb23.NewPharmacie.Repository.ValidationRepository;
 
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,8 +24,7 @@ public class ValidationService {
     private NotificationService notificationService;
 
 
-    public void enregistrer(Utilisateur utilisateurs)
-    {
+    public void enregistrer(Utilisateur utilisateurs) throws MessagingException {
         log.info("debut  methode enregistrement");
         Validation validation = new Validation();
         validation.setUtilisateur(utilisateurs);

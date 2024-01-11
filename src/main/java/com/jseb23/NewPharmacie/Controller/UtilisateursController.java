@@ -4,14 +4,12 @@ import com.jseb23.NewPharmacie.DTO.AuthentificationDTO;
 import com.jseb23.NewPharmacie.Model.Utilisateur;
 import com.jseb23.NewPharmacie.Security.JwtService;
 import com.jseb23.NewPharmacie.Service.UtilisateurService;
+import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -41,15 +39,17 @@ public class UtilisateursController {
         this.jwtService = jwtService;
     }
     @PostMapping("/inscription")
-    public void inscription(@RequestBody Utilisateur utilisateur) {
+    public void inscription(@RequestBody Utilisateur utilisateur) throws MessagingException {
 
         this.utilisateurService.inscription(utilisateur);
     }
 
-    @PostMapping(path = "/activation")
+    @GetMapping(path = "/activation", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin(origins = "http://localhost:63342")
     public ResponseEntity<String> activation(@RequestBody Map<String, String> activation) {
+        //public ResponseEntity<String> activation(@RequestParam String utilisateur, @RequestParam String code) {
         try {
-            log.info("Activation");
+            log.info(" Application dans UtilisateurController -> Activation");
 
             log.debug("données activation reçues: {}", activation);
 
@@ -70,7 +70,11 @@ public class UtilisateursController {
     }
 
     @PostMapping(path = "/connexion")
-    public ResponseEntity<?> connexion(@RequestBody AuthentificationDTO authentificationDTO) {
+    public ResponseEntity<?> connexion(
+            @RequestBody AuthentificationDTO authentificationDTO,
+             @RequestHeader(value = HttpHeaders.CONTENT_TYPE, defaultValue = MediaType.APPLICATION_JSON_VALUE)
+             String contentType)
+    {
 
         log.info(" application dans connexion");
 
@@ -78,7 +82,11 @@ public class UtilisateursController {
             final Authentication authenticate = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authentificationDTO.username(), authentificationDTO.password())
             );
-
+            // Vérifiez que le Content-Type est bien "application/json"
+            if (!MediaType.APPLICATION_JSON_VALUE.equals(contentType)) {
+                log.error("Content-Type incorrect. Attendu : application/json, Reçu : {}", contentType);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Requête mal formée. Content-Type incorrect.");
+            }
             /**
              * renvoie le principal associé à l'authentification, qui peut être un objet utilisateur après une authentification réussie.
              * En vérifiant si le principal n'est pas nul, vous vous assurez que l'authentification a réussi.
@@ -88,13 +96,13 @@ public class UtilisateursController {
                 log.info("Authentification réussie pour l'utilisateur : {}", authentificationDTO.username());
 
                 Map<String, String> tokenMap = this.jwtService.generate(authentificationDTO.username());
-                String token = tokenMap.get("bearer"); // Récupérez le token de la map
+                String token = tokenMap.get("bearer"); // génère la partie authentification du token
 
                 if (token != null)
                 {
                     log.info("Génération du token réussie pour l'utilisateur : {}", authentificationDTO.username());
 
-                    return ResponseEntity.ok().body("connexion établie, token : " + token);// récupère le token formaté
+                    return ResponseEntity.ok().body("connexion établie, token : " + token);// retourne le token formaté
                 } else
                 {
                     log.error("Erreur lors de la génération du token pour l'utilisateur : {}", authentificationDTO.username());

@@ -20,7 +20,6 @@ body {
 }
 /* Ajoutez un style pour la classe de flou pour la sidebar */
 .blurred-sidebar {
-    filter: blur(5px); /* Ajustez la quantité de flou selon vos préférences */
     pointer-events: none; /* Rend la sidebar non interactive (non cliquable) */
 }
 

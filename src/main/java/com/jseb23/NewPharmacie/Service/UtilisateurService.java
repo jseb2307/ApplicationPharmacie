@@ -6,11 +6,13 @@ import com.jseb23.NewPharmacie.Repository.RoleRepository;
 import com.jseb23.NewPharmacie.Repository.UtilisateursRepository;
 import com.jseb23.NewPharmacie.TypeDeRole;
 import com.jseb23.NewPharmacie.Model.Validation;
+import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -43,7 +45,7 @@ public class UtilisateurService implements UserDetailsService
     }
 
 
-    public void inscription(Utilisateur utilisateur) {
+    public ResponseEntity<String> inscription(Utilisateur utilisateur) throws MessagingException {
         log.info("dans utilisateurService inscription");
         log.info("nom utilisateur "+ utilisateur.getNomUtilisateur());
 
@@ -74,7 +76,7 @@ public class UtilisateurService implements UserDetailsService
         Role roleUtilisateur = roleRepository.findByLibelle(TypeDeRole.UTILISATEUR)
                 .orElseThrow(() -> new RuntimeException("Role UTILISATEUR non trouvé"));
 
-        roleUtilisateur = entityManager.find(Role.class, roleUtilisateur.getId());
+        roleUtilisateur = entityManager.find(Role.class, roleUtilisateur.getIdRole());
 
         utilisateur.setRole(roleUtilisateur);
         log.info("role utilisateur "+roleUtilisateur);
@@ -82,6 +84,8 @@ public class UtilisateurService implements UserDetailsService
         Utilisateur utilisateurPersiste = this.utilisateurRepository.save(utilisateur);
         log.info("validation et envoi pour enregistrement");
         this.validationService.enregistrer(utilisateurPersiste);
+
+        return ResponseEntity.ok("Inscription réussie");
     }
 
     public void activation(Map<String, String> activation) {

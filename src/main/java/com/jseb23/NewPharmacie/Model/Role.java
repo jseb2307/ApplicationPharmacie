@@ -18,7 +18,7 @@ import java.util.List;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    int idRole;
 
     @Enumerated(EnumType.STRING)
     TypeDeRole libelle;

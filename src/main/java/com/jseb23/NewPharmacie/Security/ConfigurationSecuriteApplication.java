@@ -1,11 +1,14 @@
 package com.jseb23.NewPharmacie.Security;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -18,6 +21,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.util.Collections;
 import java.util.List;
@@ -44,17 +49,21 @@ public class ConfigurationSecuriteApplication{
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         log.info("dans le filtre");
         return http
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable) // Disable CSRF
                 .authorizeHttpRequests(authorize ->
                                 authorize
                                         .requestMatchers(new AntPathRequestMatcher("/inscription", "POST")).permitAll()// accepte l'inscription sans authentification
-                                        .requestMatchers(new AntPathRequestMatcher("/activation", "POST")).permitAll()
+                                        .requestMatchers(new AntPathRequestMatcher("/activation", "GET")).permitAll()
                                          .requestMatchers(new AntPathRequestMatcher("/connexion", "POST")).permitAll()
-                                        .anyRequest().authenticated()) // les autres requetes doivent etre identifiées
-                .sessionManagement(httpSecuritySessionManagementConfigurer ->
-                        httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Set session policy to stateless
+                                        .requestMatchers(new AntPathRequestMatcher("/informations/create", "POST")).permitAll()
+                                        .requestMatchers(new AntPathRequestMatcher("/connexion", HttpMethod.OPTIONS.toString())).permitAll()// pré requête
+                                        .requestMatchers(new AntPathRequestMatcher("/activation", HttpMethod.OPTIONS.toString())).permitAll()
+                                        .anyRequest().authenticated()) // les autres requetes doivent être identifiées
+                                        .sessionManagement(httpSecuritySessionManagementConfigurer ->
+                                             httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Set session policy to stateless
                 )
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class) // vérifie si il connait l'utilisateur
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)//
                 .build();
     }
 
