@@ -10,12 +10,19 @@
     <link rel="stylesheet" href="maPharmacie.css">
 </head>
 <body>
+<nav class="navbar hidden" >
+    <a href="#" id="informations">Informations</a>
+    <a href="#" id="ajouter">Ajouter</a>
+    <a href="#" id="modifier">Modifier</a>
+    <a href="#" id="supprimer">Supprimer</a>
+</nav>
+
 <!---------------------- GESTION LOGIN ---------------------->
 <section class="sectionLogin" id="loginSection">
     <form action="#" method="post">
-        <h2 id="connectionTitle">Connection</h2>
+        <h2 id="connectionTitle">Connexion</h2>
         <fieldset>
-            <legend id="legendeUtilisateur">Utilisateur</legend>
+            <legend id="legendeUtilisateur">Utilisateur*</legend>
             <input
                     type="text"
                     id="username"
@@ -23,9 +30,10 @@
                     placeholder="Votre nom d'utilisateur"
                     required
             />
+            <div id="errorUsername" class="error"></div>
         </fieldset>
         <fieldset>
-            <legend id="legendeMotDePasse">Mot de passe</legend>
+            <legend id="legendeMotDePasse">Mot de passe*</legend>
             <input
                     type="password"
                     id="motDePasse"
@@ -34,10 +42,6 @@
                     required
             />
         </fieldset>
-        <label for="acceptation">
-            <input type="checkbox" id="acceptation" name="acceptation" required />
-            Accepter les conditions
-        </label>
         <a href="#" id="mdp" onclick="toggleSection('motDePasseOublieSection')"
         >Mot de passe oublié ?</a
         >
@@ -48,6 +52,7 @@
                 onclick="toggleSection('inscriptionSection')"
         >S'inscrire
         </a>
+        <a href="#" id="retourConnexionActivation" onclick="toggleSection('pageActivation')">page activation</a>
     </form>
 </section>
 
@@ -126,6 +131,10 @@
                     required
             />
         </fieldset>
+        <label for="acceptation">
+            <input type="checkbox" id="acceptation" name="acceptation" required />
+            Accepter les conditions
+        </label>
         <button id="souscrireBtn" type="button">Souscrire</button>
         <a href="#" id="retourOublie" onclick="toggleSection('loginSection')"
         >Retour à la connexion</a
@@ -153,7 +162,7 @@
     </form>
 </section>
 
-<section class="activation" id="pageActivation">
+<section class="sectionLogin hidden" id="pageActivation">
     <form action="#" method="post">
         <h2 id="validationTitle">Validation</h2>
         <fieldset>
@@ -176,8 +185,23 @@
                     required
             />
         </fieldset>
-        <button type="button" id="envoyerValidation" onclick="activerCompte()">Valider</button>
+        <button type="button" id="envoyerValidation" onclick="activerCompte()">Activation</button>
+        <a href="#" id="retourConnexionActivation" onclick="toggleSection('loginSection')">Retour à la connexion</a>
     </form>
+    </form>
+</section>
+<section class="pageInformations" id="pageInformations">
+     <h4 id="titreInformations"></h4>
+    <fieldset>
+        <legend id="legendeInformationsNom">Nom</legend>
+        <input type="text" name="informationsNom" id="informationsNom"  placeholder="Nom" >
+    </fieldset>
+    <fieldset>
+        <legend id="legendeInformationsPrenom">Prenom</legend>
+        <input type="text" name="informationsPrenom" id="informationsPrenom" placeholder="Prénom">
+    </fieldset>
+    <button id="validationInformations">Valider</button>
+
 </section>
 <!---------- SIDEBAR------------------>
 
@@ -187,11 +211,13 @@
         <h2>SPARADRAP</h2>
     </div>
     <ul class="links">
-        <h4>Commande</h4>
+        <h4>Dashboard</h4>
         <li>
             <span class="material-symbols-outlined">dashboard</span>
-            <a href="#">Dashboard</a>
+            <a href="#">Commande</a>
         </li>
+        <!--
+
         <li>
             <span class="material-symbols-outlined">show_chart</span>
             <a href="#">Revenue</a>
@@ -200,37 +226,41 @@
             <span class="material-symbols-outlined">flag</span>
             <a href="#">Reports</a>
         </li>
+        -->
+
         <hr>
-        <h4>Advanced</h4>
+        <h4>Gestion</h4>
         <li>
             <span class="material-symbols-outlined">person</span>
-            <a href="#" id="lienAjoutClient">Ajouter un client</a>
-        </li>
-        <li>
-            <span class="material-symbols-outlined">group</span>
-            <a href="#">Developer </a>
-        </li>
-        <li>
-            <span class="material-symbols-outlined">ambient_screen</span>
-            <a href="#">Magic Build</a>
+            <a href="#" id="client" onclick="gestionEntite('client')">Client</a>
         </li>
         <li>
             <span class="material-symbols-outlined">pacemaker</span>
-            <a href="#">Theme Maker</a>
+            <a href="#" id="medecin" onclick="gestionEntite('medecin')">Medecin</a>
         </li>
+        <li>
+            <span class="material-symbols-outlined">ambient_screen</span>
+            <a href="#" id="mutuelle" onclick="gestionEntite('mutuelle')">Mutuelle</a>
+        </li>
+        <li>
+            <span class="material-symbols-outlined">shopping_cart</span>
+            <a href="#" id="commande" onclick="descendreNavbar('commande')">Commande</a>
+        </li>
+        <!--
         <li>
             <span class="material-symbols-outlined">monitoring</span>
             <a href="#">Analytic</a>
         </li>
+        -->
         <hr>
-        <h4>Account</h4>
+        <h4>Statistique</h4>
         <li>
             <span class="material-symbols-outlined">bar_chart</span>
-            <a href="#">Overview</a>
+            <a href="#">Commande</a>
         </li>
         <li>
-            <span class="material-symbols-outlined">mail</span>
-            <a href="#">Message</a>
+            <span class="material-symbols-outlined">attach_money</span>
+            <a href="#">CA</a>
         </li>
         <li>
             <span class="material-symbols-outlined">settings</span>
@@ -248,8 +278,13 @@
 
 <div class="modal" id="myModal">
     <div class="modal-content" id="modalContent"></div>
-    <span class="close" id="closeModalBtn">&times;</span>
+
 </div>
+
+<footer>
+    <div id="lieux"></div>
+    <div id="temperature"></div>
+</footer>
 
 <script src="maPharmacie.js"></script>
 

@@ -57,6 +57,7 @@ public class Utilisateur implements UserDetails
 
     boolean actif = false;
 
+
     /*========================= MAPPING ==========================*/
 
 

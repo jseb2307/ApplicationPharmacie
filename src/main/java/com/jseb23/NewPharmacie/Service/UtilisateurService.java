@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -49,43 +50,53 @@ public class UtilisateurService implements UserDetailsService
         log.info("dans utilisateurService inscription");
         log.info("nom utilisateur "+ utilisateur.getNomUtilisateur());
 
-        if(!utilisateur.getEmail().contains("@")) {
-            throw  new RuntimeException("Votre mail invalide");
+        try {
+
+                if(!utilisateur.getEmail().contains("@")) {
+                    throw  new RuntimeException("Votre mail invalide");
+                }
+                if(!utilisateur.getEmail().contains(".")) {
+                    throw  new RuntimeException("Votre mail invalide");
+                }
+                    // recherche utilisateur par email
+                Optional<Utilisateur> utilisateurOptional = this.utilisateurRepository.findByUtilisateur(utilisateur.getUtilisateur());
+                if(utilisateurOptional.isPresent()) {
+                    throw  new RuntimeException("Personne déjà inscrite");
+
+                }
+
+                // vérification si mot de passe vide ou null
+                String mdp = utilisateur.getMotDePasseUtilisateur();
+                log.info("mot de passe = " +mdp);
+                if(mdp == null || mdp.trim().isEmpty()) {
+                    throw new IllegalArgumentException("Le mot de passe ne peut être vide ou nul");
+                }
+                String mdpCrypte = this.passwordEncoder.encode(utilisateur.getMotDePasseUtilisateur()); // encodage mot de passe
+                utilisateur.setMotDePasseUtilisateur(mdpCrypte);
+
+                log.info("mdp codé " +mdpCrypte);
+
+                // ================== Forcer les nouveaux inscrits à être "UTILISATEUR"  =================
+                Role roleUtilisateur = roleRepository.findByLibelle(TypeDeRole.UTILISATEUR)
+                        .orElseThrow(() -> new RuntimeException("Role UTILISATEUR non trouvé"));
+
+                roleUtilisateur = entityManager.find(Role.class, roleUtilisateur.getIdRole());
+
+                utilisateur.setRole(roleUtilisateur);
+                log.info("role utilisateur "+roleUtilisateur);
+
+                Utilisateur utilisateurPersiste = this.utilisateurRepository.save(utilisateur);
+                log.info("validation et envoi pour enregistrement");
+                this.validationService.enregistrer(utilisateurPersiste);
+
+
+            return ResponseEntity.ok("Inscription réussie");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        if(!utilisateur.getEmail().contains(".")) {
-            throw  new RuntimeException("Votre mail invalide");
-        }
 
-        Optional<Utilisateur> utilisateurOptional = this.utilisateurRepository.findByUtilisateur(utilisateur.getUtilisateur()); // recherche si utilisateur existant
-        if(utilisateurOptional.isPresent()) {
-            throw  new RuntimeException("Personne déjà inscrite");
-        }
-
-        // vérification si mot de passe vide ou null
-        String mdp = utilisateur.getMotDePasseUtilisateur();
-        log.info("mot de passe = " +mdp);
-        if(mdp == null || mdp.trim().isEmpty()) {
-            throw new IllegalArgumentException("Le mot de passe ne peut être vide ou nul");
-        }
-        String mdpCrypte = this.passwordEncoder.encode(utilisateur.getMotDePasseUtilisateur()); // encodage mot de passe
-        utilisateur.setMotDePasseUtilisateur(mdpCrypte);
-
-        log.info("mdp codé " +mdpCrypte);
-
-        // ================== Forcer les nouveaux inscrits à être "UTILISATEUR"  =================
-        Role roleUtilisateur = roleRepository.findByLibelle(TypeDeRole.UTILISATEUR)
-                .orElseThrow(() -> new RuntimeException("Role UTILISATEUR non trouvé"));
-
-        roleUtilisateur = entityManager.find(Role.class, roleUtilisateur.getIdRole());
-
-        utilisateur.setRole(roleUtilisateur);
-        log.info("role utilisateur "+roleUtilisateur);
-
-        Utilisateur utilisateurPersiste = this.utilisateurRepository.save(utilisateur);
-        log.info("validation et envoi pour enregistrement");
-        this.validationService.enregistrer(utilisateurPersiste);
-
-        return ResponseEntity.ok("Inscription réussie");
     }
 
     public void activation(Map<String, String> activation) {

@@ -40,12 +40,12 @@ public class UtilisateursController {
     }
     @PostMapping("/inscription")
     public void inscription(@RequestBody Utilisateur utilisateur) throws MessagingException {
+        log.info("dans UtilisateurController -> inscription");
 
         this.utilisateurService.inscription(utilisateur);
     }
 
-    @GetMapping(path = "/activation", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @CrossOrigin(origins = "http://localhost:63342")
+    @PostMapping(path = "/activation")
     public ResponseEntity<String> activation(@RequestBody Map<String, String> activation) {
         //public ResponseEntity<String> activation(@RequestParam String utilisateur, @RequestParam String code) {
         try {
@@ -56,6 +56,7 @@ public class UtilisateursController {
             this.utilisateurService.activation(activation);
 
             log.info("Activation a réussi");
+
 
             // Retourne une réponse HTTP 200 OK avec ce message
             return ResponseEntity.ok("Compte activé avec succès");

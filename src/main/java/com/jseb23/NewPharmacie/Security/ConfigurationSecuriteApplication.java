@@ -47,14 +47,14 @@ public class ConfigurationSecuriteApplication{
     /* ======================== FILTRES DE CONNEXION ===========================================================*/
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        log.info("dans le filtre");
+        log.info("dans ConfigurationSecuriteApplication -> securityFilterChain");
         return http
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable) // Disable CSRF
                 .authorizeHttpRequests(authorize ->
                                 authorize
                                         .requestMatchers(new AntPathRequestMatcher("/inscription", "POST")).permitAll()// accepte l'inscription sans authentification
-                                        .requestMatchers(new AntPathRequestMatcher("/activation", "GET")).permitAll()
+                                        .requestMatchers(new AntPathRequestMatcher("/activation", "POST")).permitAll()
                                          .requestMatchers(new AntPathRequestMatcher("/connexion", "POST")).permitAll()
                                         .requestMatchers(new AntPathRequestMatcher("/informations/create", "POST")).permitAll()
                                         .requestMatchers(new AntPathRequestMatcher("/connexion", HttpMethod.OPTIONS.toString())).permitAll()// pré requête

@@ -72,7 +72,7 @@ public class JwtService {
                 .parseClaimsJws(token)
                 .getBody();
     }
-/* ========================= CREATION JETON =========================================*/
+/* ========================= CREATION TOKEN =========================================*/
     private Map<String, String> generateJwt(Utilisateur utilisateur)
     {
         log.info("Application dans JwtService -> generateJwt");
