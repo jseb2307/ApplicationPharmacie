@@ -1,6 +1,10 @@
 
 let selectedAddressResult = null;
-//let choixGestion =null;
+let selectionInformations =null;
+const formInformations = document.getElementById("formInformations");
+const validationButton = document.getElementById("validationInformations");
+const apiUrl = "https://api-adresse.data.gouv.fr/search/";
+const boutonApi = document.getElementById("chargementApi");
 
 
 
@@ -347,12 +351,10 @@ function  handleLogin()
    // document.getElementById("sidebar").classList.add("visible-sidebar");
 // }
 
-
 /*========================================= API autocomplete adresse ================================================*/
 
-const apiUrl = "https://api-adresse.data.gouv.fr/search/";
-
-async function autocompleteAdresse(query) {
+async function autocompleteAdresse(query)
+{
     try {
         const response = await fetch(
             `${apiUrl}?q=${encodeURIComponent(query)}&autocomplete`,
@@ -460,28 +462,34 @@ async function gestionEntite(entite)
     descendreNavbar(null);
     //console.log("avant switch "+choixGestion);
 
-    // La suite de votre code...
-    switch (entite)
-    {
+    const inputInformationsNomPrenom = document.getElementById("informationsNomPrenom");
+    const resultatInformationsNomPrenom = document.getElementById("autocompleteListNomPrenom");
+
+
+    switch (entite) {
         case 'client':
-            console.log("client");
-            switch (choixGestion)
-            {
+            switch (choixGestion) {
                 case 'informations':
+
                     pageInformations.style.visibility = 'visible';
                     let h4 = document.getElementById("titreInformations");
                     h4.innerText = "Informations client"
-                    const nomInput = document.getElementById("informationsNom");
 
 
-                    // Ajoutez un écouteur d'événements pour le clic
-                    nomInput.addEventListener("click", async () => {
-                        // Récupérez la liste des patients
-                        const patients = await rechercheInformation();
 
-                        // Affichez la liste des patients dans la console
-                        console.log(patients);
+
+                    // Ajoute un écouteur d'événements pour le changement de sélection
+                    inputInformationsNomPrenom.addEventListener("input", async function () {
+                        const inputValueInformationsNomPrenom = this.value;
+                        if (inputValueInformationsNomPrenom.length >= 2) {
+                            const resultatInfoNomPrenom = await rechercheInformation(inputValueInformationsNomPrenom);
+                            displayResultatInfoNomPrenom(resultatInfoNomPrenom);
+                        } else {
+                            hideResultatInfoNomPrenom();
+                        }
                     });
+
+
                     break;
                 case 'ajouter':
                     console.log("ajouter");
@@ -508,34 +516,127 @@ async function gestionEntite(entite)
     async function rechercheInformation() {
         try {
 
-            // Votre jeton d'accès
-            const accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJub20iOiJQcnVkaG9uIiwic3ViIjoianNlYiIsImV4cCI6MTcwNTQyMjM2N30.5KSB0-9lRLtyEtDp9c8OuLTbVGmzlaMKEnl0p0ich24";
+            const accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJub20iOiJQcnVkaG9uIiwic3ViIjoianNlYiIsImV4cCI6MTcwNTUyMzM0N30.aFUqjs2FggVDRVktLJeqfdlKGJgiA3GfEXQnsfT65S0";
 
-            // URL de votre endpoint
+            // URL  endpoint
             const endpointUrl = "http://localhost:8080/patient/all";
 
 
             // Options pour la requête
             const requestOptions = {
-                method: 'GET',  // ou 'POST', 'PUT', etc., selon le type de requête que vous voulez faire
+                method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${accessToken}`,  // Incluez le jeton d'accès dans l'en-tête d'autorisation
-                    'Content-Type': 'application/json'  // Vous pouvez ajuster ceci en fonction de vos besoins
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json'
                 },
-                // Autres options si nécessaire (body, etc.)
             };
 
             // Faites la requête
             const response = await fetch(endpointUrl, requestOptions);
             const data = await response.json();
-            console.log(data);
+            //console.log(data);
+            return data;
         } catch (error) {
             console.error('Erreur lors de la requête :', error);
         }
     }
+    function displayResultatInfoNomPrenom(resultatInfoNomPrenom) {
+        // Efface le contenu précédent du menu déroulant
+        resultatInformationsNomPrenom.innerHTML = "";
+
+        // Affiche chaque résultat dans le menu déroulant
+        resultatInfoNomPrenom.forEach((resultat) => {
+            console.log(resultat);
+            const resultatItem = document.createElement("a");
+            resultatItem.textContent = resultat.nomPatient +" "+ resultat.prenomPatient;
+            resultatItem.addEventListener("click", () => handleResultatInfoNomPrenomClick(resultat));
+            resultatInformationsNomPrenom.appendChild(resultatItem);
+        });
+
+        // Affiche le menu déroulant
+        resultatInformationsNomPrenom.style.display = "block";
+    }
+
+    function hideResultatInfoNomPrenom() {
+        // Cache le menu déroulant
+        resultatInformationsNomPrenom.style.display = "none";
+    }
+
+    function handleResultatInfoNomPrenomClick(resultat)
+    {
+        // Cette fonction est appelée lorsque l'utilisateur clique sur un résultat
+        inputInformationsNomPrenom.value = resultat.nomPatient +" "+ resultat.prenomPatient;
+        hideResultatInfoNomPrenom();
+        selectionInformations = resultat;
+        console.log(" resultat "+resultat.nomPatient);
+        console.log(" resultat "+resultat.listDocteurs[0].nomDocteur);
+        console.log(" resultat "+resultat.informations);
+
+        validationButton.addEventListener("click", function () {
+            // Modifier la visibilité de formInformations
+            formInformations.style.visibility = 'visible';
+            document.getElementById("nomInput").value = resultat.nomPatient || "";
+            document.getElementById("preNomInput").value = resultat.prenomPatient || "";
+            document.getElementById("dateNaissanceInput").value = resultat.dateDeNaissance || "";
+            document.getElementById("adresseInput").value = resultat.informations.ville || "";
+            document.getElementById("numSecuInput").value = resultat.numeroSecuPatient || "";
+            document.getElementById("medecinTraitantInput").value = resultat.listDocteurs[0].nomDocteur || "";
+            document.getElementById("mutuelleInput").value = resultat.nomMutuelle || "";
+        });
+
+        // lancement api météo
+        boutonApi.addEventListener('click',function (){
+            apiMeteo(resultat);
+            apiCarte(resultat);
+        })
+
+    }
 
 }
+async function apiMeteo(resultat) {
+    let cleApiMeteo = "4fd21252917906a6e447c39d8b623669";
+    let latitude = resultat.informations.latitude;
+    let longitude = resultat.informations.longitude;
 
+    const urlApiMeteo = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${cleApiMeteo}&units=metric`;
 
+    console.log(latitude);
+
+    try {
+        const responseApiMeteo = await fetch(
+            urlApiMeteo,
+            {
+                method: "GET",
+                headers: {
+                    Accept: "application/json",
+                },
+            }
+        );
+
+        if (!responseApiMeteo.ok) {
+            throw new Error(`Erreur de recherche météo: ${responseApiMeteo.statusText}`);
+        }
+
+        const dataApiMeteo = await responseApiMeteo.json();
+        console.log("Réponse de la météo :", dataApiMeteo);
+        return dataApiMeteo;
+    } catch (error) {
+        console.error("Erreur lors de la recherche météo:", error);
+        return null; // Vous pourriez aussi retourner une valeur par défaut ou traiter l'erreur différemment
+    }
+}
+
+function apiCarte(resultat){
+    const apiCarteLatitude = resultat.informations.latitude;
+    const apiCarteLongitude = resultat.informations.longitude;
+
+    let map = L.map('map').setView([apiCarteLatitude,apiCarteLongitude], 13);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+    const marker = L.marker([apiCarteLatitude, apiCarteLongitude]).addTo(map);
+
+}
 
 

@@ -45,6 +45,11 @@ public class Informations
     @Column(length = 30)
     String mail;
 
+    String latitude;
+
+
+    String longitude;
+
 /*===================== MAPPING ====================*/
     @OneToMany(mappedBy = "informations")
     List<Docteur> docteurs;

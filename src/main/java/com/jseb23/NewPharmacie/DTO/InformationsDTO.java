@@ -21,6 +21,8 @@ public class InformationsDTO
          String ville;
          String numeroTelephone;
          String mail;
+         String latitude;
+         String longitude;
 
     public static InformationsDTO mapInformationsToDTO(Informations informations) {
         return new InformationsDTO(
@@ -30,7 +32,9 @@ public class InformationsDTO
                 informations.getCodePostal(),
                 informations.getVille(),
                 informations.getNumeroTelephone(),
-                informations.getMail()
+                informations.getMail(),
+                informations.getLatitude(),
+                informations.getLongitude()
         );
     }
 
@@ -49,6 +53,8 @@ public class InformationsDTO
         informations.setVille(informationsDTO.getVille());
         informations.setNumeroTelephone(informationsDTO.getNumeroTelephone());
         informations.setMail(informationsDTO.getMail());
+        informations.setLatitude(informationsDTO.getLatitude());
+        informations.setLongitude(informationsDTO.getLongitude());
         return informations;
     }
 
