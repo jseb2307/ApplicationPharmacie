@@ -11,14 +11,17 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
           crossorigin=""/>
+    <!------------ lien icones meteo------------->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
+
+
     <link rel="stylesheet" href="maPharmacie.css">
 </head>
 <body>
+<!---------------------- NAVBAR ---------------------->
 <nav class="navbar hidden" >
     <a href="#" id="informations">Informations</a>
     <a href="#" id="ajouter">Ajouter</a>
-    <a href="#" id="modifier">Modifier</a>
-    <a href="#" id="supprimer">Supprimer</a>
 </nav>
 
 <!---------------------- GESTION LOGIN ---------------------->
@@ -59,7 +62,7 @@
         <a href="#" id="retourConnexionActivation" onclick="toggleSection('pageActivation')">page activation</a>
     </form>
 </section>
-
+<!------------------------- SECTION INSCRIPTION ------------------------->
 <section class="sectionLogin hidden" id="inscriptionSection">
     <form action="#" method="post">
         <h2 id="inscriptionTitle">Inscription</h2>
@@ -145,7 +148,7 @@
         >
     </form>
 </section>
-
+<!---------------------------- SECTION MOT DE PASSE OUBLIE ---------------------------->
 <section class="sectionLogin hidden" id="motDePasseOublieSection">
     <form action="#" method="post">
         <h2 id="motDePasseOublieTitle">Mot de passe oublié</h2>
@@ -165,7 +168,7 @@
         >
     </form>
 </section>
-
+<!------------------ Page activation compte-------------------->
 <section class="sectionLogin hidden" id="pageActivation">
     <form action="#" method="post">
         <h2 id="validationTitle">Validation</h2>
@@ -234,16 +237,35 @@
         <legend id="formMutuelle">Mutuelle</legend>
         <input type="text" id="mutuelleInput" name="mutuelleInput">
     </fieldset>
+    <fieldset>
+        <legend id="formMail">Email</legend>
+        <input type="text" id="mailInput" name="mailInput">
+    </fieldset>
     <div class="formButtons">
         <button id="formModification">Modifier</button>
         <button id="formSupprimer">Supprimer</button>
         <button id="formRetour">Retour</button>
         <button id="chargementApi">API</button>
     </div>
-    
+    <!----------------------- OVERLAY AFFICHAGE API ---------------------------->
+    <div id="overlay"></div>
 </section>
-<!---------- DIV POUR LA MAP ------------------>
-<div id="map"></div>
+<!----------------------- SECTION API ---------------------------->
+<section id="Api">
+        <!---------- DIV POUR LA MAP ------------------>
+        <div id="map"></div>
+
+        <!---------- DIV POUR L API METEO ------------------>
+        <div id="meteo">
+            <img id="meteoImage" src="" alt="Image météo">
+            <div id="meteo-info">
+                <i class="fas fa-thermometer-half"></i>
+                <span id="meteotemperature"></span>
+                <i class="fas fa-wind"></i>
+                <span id="meteoVent"></span>
+            </div>
+        </div>
+</section>
 <!---------- SIDEBAR------------------>
 
 <aside class="sidebar blurred-sidebar hidden" id="sidebar">
@@ -315,13 +337,8 @@
 </aside>
 
 <!----------FORMULAIRE NOUVEAU PATIENT------------------>
-<div class="overlay" id="overlay"></div>
 
-<div class="modal" id="myModal">
-    <div class="modal-content" id="modalContent"></div>
-
-</div>
-
+<!----------- FOOTER ------------------------------------->
 <footer>
     <div id="lieux"></div>
     <div id="temperature"></div>

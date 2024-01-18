@@ -444,7 +444,7 @@ function descendreNavbar(element) {
     }
 }
 
-// Fonction pour gérer le clic sur les liens des entités
+// Fonction pour gérer le clic sur les liens des entités ------------------------------
 async function gestionEntite(entite)
 {
     // Attendre le clic sur un lien de la navbar avant de passer à la suite
@@ -475,9 +475,6 @@ async function gestionEntite(entite)
                     let h4 = document.getElementById("titreInformations");
                     h4.innerText = "Informations client"
 
-
-
-
                     // Ajoute un écouteur d'événements pour le changement de sélection
                     inputInformationsNomPrenom.addEventListener("input", async function () {
                         const inputValueInformationsNomPrenom = this.value;
@@ -488,7 +485,6 @@ async function gestionEntite(entite)
                             hideResultatInfoNomPrenom();
                         }
                     });
-
 
                     break;
                 case 'ajouter':
@@ -516,7 +512,7 @@ async function gestionEntite(entite)
     async function rechercheInformation() {
         try {
 
-            const accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJub20iOiJQcnVkaG9uIiwic3ViIjoianNlYiIsImV4cCI6MTcwNTUyMzM0N30.aFUqjs2FggVDRVktLJeqfdlKGJgiA3GfEXQnsfT65S0";
+            const accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqc2ViIiwibm9tIjoiUHJ1ZGhvbiIsImV4cCI6MTcwNTU5MjE5M30.SRQBAnAD1qfKasvd-Dm9be8VvOrOgErgnwa12ck7tVU";
 
             // URL  endpoint
             const endpointUrl = "http://localhost:8080/patient/all";
@@ -568,10 +564,11 @@ async function gestionEntite(entite)
         inputInformationsNomPrenom.value = resultat.nomPatient +" "+ resultat.prenomPatient;
         hideResultatInfoNomPrenom();
         selectionInformations = resultat;
-        console.log(" resultat "+resultat.nomPatient);
-        console.log(" resultat "+resultat.listDocteurs[0].nomDocteur);
-        console.log(" resultat "+resultat.informations);
+        //console.log(" resultat "+resultat.nomPatient);
+        //console.log(" resultat "+resultat.listDocteurs[0].nomDocteur);
 
+
+        // click sur valider
         validationButton.addEventListener("click", function () {
             // Modifier la visibilité de formInformations
             formInformations.style.visibility = 'visible';
@@ -582,6 +579,8 @@ async function gestionEntite(entite)
             document.getElementById("numSecuInput").value = resultat.numeroSecuPatient || "";
             document.getElementById("medecinTraitantInput").value = resultat.listDocteurs[0].nomDocteur || "";
             document.getElementById("mutuelleInput").value = resultat.nomMutuelle || "";
+            document.getElementById("mailInput").value = resultat.informations.mail || "";
+
         });
 
         // lancement api météo
@@ -616,9 +615,14 @@ async function apiMeteo(resultat) {
         if (!responseApiMeteo.ok) {
             throw new Error(`Erreur de recherche météo: ${responseApiMeteo.statusText}`);
         }
-
         const dataApiMeteo = await responseApiMeteo.json();
-        console.log("Réponse de la météo :", dataApiMeteo);
+        console.log(dataApiMeteo);
+        // fixe les infos pour affichage météo -----------------------------
+        const temperature = dataApiMeteo.main.temp;
+        const ventMeteo = dataApiMeteo.wind.speed;
+        const tempsMeteo = dataApiMeteo.weather[0].id;
+        affichageMeteo(temperature,ventMeteo,tempsMeteo);
+
         return dataApiMeteo;
     } catch (error) {
         console.error("Erreur lors de la recherche météo:", error);
@@ -626,7 +630,59 @@ async function apiMeteo(resultat) {
     }
 }
 
+/**
+ * AFFICHAGE API METEO
+ * @param temperature
+ * @param ventMeteo
+ * @param tempsMeteo
+ */
+function affichageMeteo(temperature,ventMeteo,tempsMeteo) {
+// diferents cas traités par id(une image pour plusieurs id)
+    if (tempsMeteo >= 600 && tempsMeteo <= 622)
+    {
+            document.getElementById('meteoImage').src="../src/main/resources/images/neige.png";
+    }else if (tempsMeteo >= 200 && tempsMeteo <= 232){
+        document.getElementById('meteoImage').src="../src/main/resources/images/orage.png";
+    }else if (tempsMeteo >= 300 && tempsMeteo <= 321){
+        document.getElementById('meteoImage').src="../src/main/resources/images/pluie.png";
+    }else if (tempsMeteo >= 500 && tempsMeteo <= 531){
+        document.getElementById('meteoImage').src="../src/main/resources/images/pluie.png";
+    }else if (tempsMeteo >= 700 && tempsMeteo <= 781){
+        document.getElementById('meteoImage').src="../src/main/resources/images/brouillard.png";
+    }else if (tempsMeteo ===800){
+        document.getElementById('meteoImage').src="../src/main/resources/images/soleil.png";
+    }else {
+        document.getElementById('meteoImage').src="../src/main/resources/images/couvert.png";
+    }
+
+    //console.log(tempsMeteo);
+    // fixe les icones
+    document.querySelector('#meteo-info .fa-thermometer-half').style.color = '#fff';
+    document.querySelector('#meteo-info .fa-wind').style.color = '#fff';
+
+    // affiche tmp et vent
+    document.getElementById('meteotemperature').innerHTML = `Temperature: ${temperature} <span>&#8451;</span>`;
+    document.getElementById('meteoVent').innerHTML = `Vent: ${ventMeteo} m/s`;
+
+    // rend la page visible
+    document.getElementById('meteo').style.visibility = 'visible';
+    // rend overlay visible
+    document.getElementById('overlay').style.display = 'block';
+
+    document.body.addEventListener('click', function() {
+        // Cache les API et overlay en modifiant la propriété 'visibility'
+        document.getElementById('meteo').style.visibility = 'hidden';
+        document.getElementById('map').style.visibility = 'hidden';
+        document.getElementById('overlay').style.display = 'none';
+    });
+}
+
+/**
+ * API CARTE OPENSTREETMAP.ORG
+ * @param resultat
+ */
 function apiCarte(resultat){
+    const carte = document.getElementById("map");
     const apiCarteLatitude = resultat.informations.latitude;
     const apiCarteLongitude = resultat.informations.longitude;
 
@@ -636,7 +692,7 @@ function apiCarte(resultat){
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
     const marker = L.marker([apiCarteLatitude, apiCarteLongitude]).addTo(map);
+    carte.style.visibility = 'visible';
 
 }
-
 
