@@ -213,38 +213,45 @@
         <legend id="formNom">Nom</legend>
         <input type="text" id="nomInput" name="nomInput">
     </fieldset>
-    <fieldset>
+    <fieldset id="fieldsetpreNomInput">
         <legend id="formpreNom">Prénom</legend>
         <input type="text" id="preNomInput" name="preNomInput">
     </fieldset>
-    <fieldset>
+    <fieldset id="fieldsetformDateNaissance">
         <legend id="formDateNaissance">Date de naissance</legend>
         <input type="text" id="dateNaissanceInput" name="dateNaissanceInput">
     </fieldset>
     <fieldset >
         <legend id="formAdresse">Adresse</legend>
         <input type="text" id="adresseInput" name="adresseInput">
+        <div id="resultsDropdownFormulaireAjout"></div>
     </fieldset>
-    <fieldset>
+    <fieldset id="fieldsetformNumSecu">
         <legend id="formNumSecu">Numéro sécurité sociale</legend>
         <input type="text" id="numSecuInput" name="numSecuInput">
     </fieldset>
-    <fieldset>
+    <fieldset id="fieldsetformMedecinTraitant">
         <legend id="formMedecinTraitant">Médecin traitant</legend>
         <input type="text" id="medecinTraitantInput" name="medecinTraitantInput">
+        <div id="autocompleteListDocteur"></div>
     </fieldset>
-    <fieldset>
+    <fieldset id="fieldsetformMutuelle">
         <legend id="formMutuelle">Mutuelle</legend>
         <input type="text" id="mutuelleInput" name="mutuelleInput">
     </fieldset>
-    <fieldset>
+    <fieldset id="fieldsetMailInput">
         <legend id="formMail">Email</legend>
         <input type="text" id="mailInput" name="mailInput">
+    </fieldset>
+    <fieldset>
+        <legend id="formNumTel">Téléphone</legend>
+        <input type="text" id="numTelInput" name="numTelInput">
     </fieldset>
     <div class="formButtons">
         <button id="formModification">Modifier</button>
         <button id="formSupprimer">Supprimer</button>
         <button id="formRetour">Retour</button>
+        <button id="formAjouter">Ajouter</button>
         <button id="chargementApi">API</button>
     </div>
     <!----------------------- OVERLAY AFFICHAGE API ---------------------------->
@@ -299,7 +306,7 @@
         </li>
         <li>
             <span class="material-symbols-outlined">pacemaker</span>
-            <a href="#" id="medecin" onclick="gestionEntite('medecin')">Medecin</a>
+            <a href="#" id="docteur" onclick="gestionEntite('docteur')">Docteur</a>
         </li>
         <li>
             <span class="material-symbols-outlined">ambient_screen</span>

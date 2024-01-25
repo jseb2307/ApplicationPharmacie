@@ -397,17 +397,20 @@ a:hover {
     background-color: #2fa22f;
 }
 #informationsNomPrenom {
-    width: 250px;
+    width: 350px;
 }
-#autocompleteListNomPrenom {
+#autocompleteListNomPrenom,
+#resultsDropdownFormulaireAjout{
     display: none;
     position: absolute;
     border: 1px solid #ccc;
-    max-height: 250px;
+    border-radius: 5px;
+    max-height: 200px;
     overflow-y: auto;
 }
 
-#autocompleteListNomPrenom a {
+#autocompleteListNomPrenom a,
+#resultsDropdownFormulaireAjout a {
     display: block;
     padding: 10px;
     text-decoration: none;

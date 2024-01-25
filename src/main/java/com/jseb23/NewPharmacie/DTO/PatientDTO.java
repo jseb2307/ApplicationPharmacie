@@ -25,11 +25,7 @@ public class PatientDTO
     // Informations du patient
     InformationsDTO informations;
 
-    // Nom et prénom du docteur
-
    List<DocteurDTO> listDocteurs;
-
-//    String prenomDocteur;
 
     // Nom de la mutuelle
     String nomMutuelle;

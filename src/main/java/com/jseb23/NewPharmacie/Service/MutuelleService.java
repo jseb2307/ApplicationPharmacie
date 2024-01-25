@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface MutuelleService
 {
-    // Méthodes de lecture
+    /* Méthodes de lecture*/
     Optional<Mutuelle> findById(Long id);
     List<Mutuelle> findAll();
     List<Mutuelle> findAllById(Iterable<Long> ids);

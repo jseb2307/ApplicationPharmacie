@@ -22,7 +22,7 @@ public class Mutuelle
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long idMutuelle;
 
-    @Column(length = 20, nullable = false)
+    @Column(length = 40, nullable = false)
     String nomMutuelle;
 
     /*========================= MAPPING ==========================*/

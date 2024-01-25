@@ -8,6 +8,7 @@ import com.jseb23.NewPharmacie.Model.Mutuelle;
 import com.jseb23.NewPharmacie.Service.InformationsService;
 import com.jseb23.NewPharmacie.Service.MutuelleService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.jseb23.NewPharmacie.DTO.MutuelleDTO.mapMutuelleToDTO;
-
+@Slf4j
 @RestController
 @RequestMapping("/mutuelle")
 @AllArgsConstructor
@@ -64,19 +65,27 @@ public class MutuelleController
     @PostMapping("/create")
     public ResponseEntity<Mutuelle> createMutuelle(@RequestBody MutuelleDTO mutuelleDTO) {
         try {
-            // Créez l'information à partir de DTO
+            /*Créez l'information à partir de DTO*/
             Informations informations = InformationsDTO.mapDTOToInformations(mutuelleDTO.getInformations());
 
-            // Enregistrez l'information dans la base de données pour récupérer l'ID
+            /* Enregistrez l'information dans la base de données pour récupérer l'ID*/
             informations = informationsService.save(informations);
+            log.info("Informations mutuelle enregistrées dans la base de données avec l'ID: {}", informations.getIdInformations());
 
-            // Créez la mutuelle avec l'ID de l'information
+            /*Créez la mutuelle avec l'ID de l'information*/
             Mutuelle mutuelle = new Mutuelle();
+            log.info("Valeur du champ nomMutuelle du DTO : {}", mutuelleDTO.getNomMutuelle());
             mutuelle.setNomMutuelle(mutuelleDTO.getNomMutuelle());
+            log.info("Valeur du champ nomMutuelle de l'objet Mutuelle : {}", mutuelle.getNomMutuelle());
             mutuelle.setInformations(informations);
-            // autres attributs du Docteur si nécessaire
 
-            // Enregistrez le docteur dans la base de données
+            /*Récupérez les informations du docteur après l'enregistrement*/
+            String nomMutuelleEnregistre = mutuelle.getNomMutuelle();
+            Long idInformationsEnregistre = mutuelle.getInformations().getIdInformations();
+
+            log.info("Mutuelle enregistré - Nom: {}, ID Informations: {}",
+                    nomMutuelleEnregistre,  idInformationsEnregistre);
+            /* Enregistrez le docteur dans la base de données*/
             mutuelle = mutuelleService.save(mutuelle);
 
             return ResponseEntity.ok(mutuelle);

@@ -58,14 +58,14 @@ public class UtilisateursController {
             log.info("Activation a réussi");
 
 
-            // Retourne une réponse HTTP 200 OK avec ce message
+            /* Retourne une réponse HTTP 200 OK avec ce message*/
             return ResponseEntity.ok("Compte activé avec succès");
 
         } catch (Exception e) {
 
             log.error("Activation a échoué", e);
 
-            // Retourne une réponse HTTP 500 Internal Server Error avec ce message d'erreur
+            /*Retourne une réponse HTTP 500 Internal Server Error avec ce message d'erreur*/
             return ResponseEntity.status(500).body("Erreur lors de l'activation du compte");
         }
     }

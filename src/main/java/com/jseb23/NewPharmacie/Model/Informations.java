@@ -35,7 +35,7 @@ public class Informations
     @NotNull
     int codePostal;
 
-    @Column(length = 20, nullable = false)
+    @Column(length = 50, nullable = false)
     String ville;
 
     @Column(length = 10)

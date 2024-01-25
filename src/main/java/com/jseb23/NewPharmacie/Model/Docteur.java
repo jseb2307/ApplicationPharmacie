@@ -24,7 +24,7 @@ public class Docteur {
     @Column(length = 15, nullable = false)
     String nomDocteur;
 
-    @Column(length = 20, nullable = false)
+    @Column(length = 50, nullable = false)
     String prenomDocteur;
 
 

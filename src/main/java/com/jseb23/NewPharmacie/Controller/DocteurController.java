@@ -7,6 +7,7 @@ import com.jseb23.NewPharmacie.Service.DocteurService;
 import com.jseb23.NewPharmacie.Model.Informations;
 import com.jseb23.NewPharmacie.Service.InformationsService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 import static com.jseb23.NewPharmacie.DTO.DocteurDTO.mapDocteurToDTO;
 
 
+@Slf4j
 @RestController
 @RequestMapping("/docteur")
 @AllArgsConstructor
@@ -60,20 +62,28 @@ public class DocteurController
     @PostMapping("/create")
     public ResponseEntity<Docteur> createDocteur(@RequestBody DocteurDTO docteurDTO) {
         try {
-            // Créez l'information à partir de DTO
+            /*Créez l'information à partir de DTO*/
             Informations informations = InformationsDTO.mapDTOToInformations(docteurDTO.getInformations());
 
-            // Enregistrez l'information dans la base de données pour récupérer l'ID
+            /*Enregistrez l'information dans la base de données pour récupérer l'ID*/
             informations = informationsService.save(informations);
+            log.info("Informations enregistrées dans la base de données avec l'ID: {}", informations.getIdInformations());
 
-            // Créez le docteur avec l'ID de l'information
+            /*Créez le docteur avec l'ID de l'information*/
             Docteur docteur = new Docteur();
             docteur.setNomDocteur(docteurDTO.getNomDocteur());
             docteur.setPrenomDocteur(docteurDTO.getPrenomDocteur());
             docteur.setInformations(informations);
-                    // autres attributs du Docteur si nécessaire
+            log.info("DocteurDTO apres constructeur - Nom: {}, Prénom: {}, idinfo:{}",
+                    docteurDTO.getNomDocteur(), docteurDTO.getPrenomDocteur(),informations.getIdInformations());
+            /*Récupérez les informations du docteur après l'enregistrement*/
+            String nomDocteurEnregistre = docteur.getNomDocteur();
+            String prenomDocteurEnregistre = docteur.getPrenomDocteur();
+            Long idInformationsEnregistre = docteur.getInformations().getIdInformations();
 
-            // Enregistrez le docteur dans la base de données
+            log.info("Docteur enregistré - Nom: {}, Prénom: {}, ID Informations: {}",
+                    nomDocteurEnregistre, prenomDocteurEnregistre, idInformationsEnregistre);
+            /*Enregistrez le docteur dans la base de données*/
             docteur = docteurService.save(docteur);
 
             return ResponseEntity.ok(docteur);
