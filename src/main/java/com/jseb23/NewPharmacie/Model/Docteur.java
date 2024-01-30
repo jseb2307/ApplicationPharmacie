@@ -14,11 +14,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@FieldDefaults(level= AccessLevel.PRIVATE) // --> passe des attibuts private
+@FieldDefaults(level= AccessLevel.PRIVATE) /* --> passe des attibuts private*/
 @Entity
 public class Docteur {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //--> auto incrémentation par la base de données
+    @GeneratedValue(strategy = GenerationType.IDENTITY) /*--> auto incrémentation par la base de données*/
     Long idDocteur;
 
     @Column(length = 15, nullable = false)

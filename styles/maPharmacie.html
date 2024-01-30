@@ -238,6 +238,7 @@
     <fieldset id="fieldsetformMutuelle">
         <legend id="formMutuelle">Mutuelle</legend>
         <input type="text" id="mutuelleInput" name="mutuelleInput">
+        <div id="autocompleteListMutuelle"></div>
     </fieldset>
     <fieldset id="fieldsetMailInput">
         <legend id="formMail">Email</legend>
@@ -302,7 +303,7 @@
         <h4>Gestion</h4>
         <li>
             <span class="material-symbols-outlined">person</span>
-            <a href="#" id="client" onclick="gestionEntite('client')">Client</a>
+            <a href="#" id="client" onclick="gestionEntite('patient')">Patient</a>
         </li>
         <li>
             <span class="material-symbols-outlined">pacemaker</span>

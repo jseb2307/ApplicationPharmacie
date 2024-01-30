@@ -400,7 +400,9 @@ a:hover {
     width: 350px;
 }
 #autocompleteListNomPrenom,
-#resultsDropdownFormulaireAjout{
+#resultsDropdownFormulaireAjout
+/*#autocompleteListDocteur,*/
+/*#autocompleteListMutuelle*/{
     display: none;
     position: absolute;
     border: 1px solid #ccc;
@@ -410,7 +412,9 @@ a:hover {
 }
 
 #autocompleteListNomPrenom a,
-#resultsDropdownFormulaireAjout a {
+#resultsDropdownFormulaireAjout a,
+#autocompleteListDocteur a,
+#autocompleteListMutuelle a{
     display: block;
     padding: 10px;
     text-decoration: none;
@@ -514,7 +518,7 @@ a:hover {
     margin-top: auto;
     margin-bottom: 10px;
 }
-#formModification, #formSupprimer, #formRetour , #chargementApi{
+#formModification, #formSupprimer, #formRetour , #formAjouter, #chargementApi{
     width: 20%;
 
 

@@ -70,7 +70,7 @@ public class MutuelleController
 
             /* Enregistrez l'information dans la base de données pour récupérer l'ID*/
             informations = informationsService.save(informations);
-            log.info("Informations mutuelle enregistrées dans la base de données avec l'ID: {}", informations.getIdInformations());
+            /*log.info("Informations mutuelle enregistrées dans la base de données avec l'ID: {}", informations.getIdInformations());*/
 
             /*Créez la mutuelle avec l'ID de l'information*/
             Mutuelle mutuelle = new Mutuelle();

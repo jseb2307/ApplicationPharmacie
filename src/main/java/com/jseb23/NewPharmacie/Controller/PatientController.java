@@ -47,8 +47,10 @@ public class PatientController {
 
     @PostMapping("/create")
     public ResponseEntity<PatientDTO> createPatient(@RequestBody Patient patient) {
+        System.out.println("Informations du patient reçues : " + patient.toString());
         Patient createdPatient = patientService.save(patient);
         PatientDTO patientDTO = mapPatientToDTO(createdPatient);
+        System.out.println("Patient créé : " + patientDTO.toString());
 
         return ResponseEntity.ok(patientDTO);
     }

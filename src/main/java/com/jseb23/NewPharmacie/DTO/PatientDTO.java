@@ -1,5 +1,6 @@
 package com.jseb23.NewPharmacie.DTO;
 
+import com.jseb23.NewPharmacie.Model.Mutuelle;
 import com.jseb23.NewPharmacie.Model.Patient;
 import com.jseb23.NewPharmacie.Model.Docteur;
 import lombok.AllArgsConstructor;
@@ -40,7 +41,7 @@ public class PatientDTO
                     .collect(Collectors.toList());
         }
 
-        return Collections.emptyList(); // La liste des docteurs est vide ou null
+        return Collections.emptyList(); /*La liste des docteurs est vide ou nul*/
     }
 
     public static PatientDTO mapPatientToDTO(Patient patient) {
@@ -54,7 +55,6 @@ public class PatientDTO
                 getDocteursDTO(patient.getListDocteurs()),
                 patient.getMutuelle() != null ? patient.getMutuelle().getNomMutuelle() : null,
                 patient.getMutuelle() != null ? patient.getMutuelle().getIdMutuelle() : null
-                // Ajoutez d'autres propriétés si nécessaire
         );
     }
 
@@ -71,9 +71,9 @@ public class PatientDTO
         patient.setPrenomPatient(patientDTO.getPrenomPatient());
         patient.setDateDeNaissance(patientDTO.getDateDeNaissance());
         patient.setNumeroSecuPatient(patientDTO.getNumeroSecuPatient());
-        // Informations du patient
+        /* Informations du patient*/
         patient.setInformations(InformationsDTO.mapDTOToInformations(patientDTO.getInformations()));
-        // Ajoutez d'autres propriétés si nécessaire
+
         return patient;
     }
 }

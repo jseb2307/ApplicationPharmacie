@@ -64,7 +64,7 @@ public class InformationsController {
         if (existingInformationsOptional.isPresent()) {
             Informations existingInformations = existingInformationsOptional.get();
 
-            // Mettez à jour les propriétés nécessaires de l'entité existante avec les nouvelles valeurs
+            /*Mets à jour les propriétés nécessaires de l'entité existante avec les nouvelles valeurs*/
             existingInformations.setNumeroRue(newInformations.getNumeroRue());
             existingInformations.setRue(newInformations.getRue());
             existingInformations.setCodePostal(newInformations.getCodePostal());
@@ -72,9 +72,7 @@ public class InformationsController {
             existingInformations.setNumeroTelephone(newInformations.getNumeroTelephone());
             existingInformations.setMail(newInformations.getMail());
 
-            // Pas besoin de définir l'identifiant, car il est déjà défini
-
-            // Enregistrez les modifications dans la base de données
+            /*Enregistre les modifications dans la base de données*/
             Informations updatedInformations = informationsService.save(existingInformations);
 
             return ResponseEntity.ok(updatedInformations);

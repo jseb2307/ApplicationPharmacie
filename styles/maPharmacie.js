@@ -2,12 +2,19 @@
 let selectedAddressResult = null;
 let selectionInformations =null;
 let resultatsRecherche = null;
+let resultatRechercheMutuelle = null;
+let resultatMutuelleSelectionne = null;
+let docteurSelectionne = null;
 let entiteData = null;
+/* infos formulaire --------------*/
 let nomEntite = document.getElementById("nomInput");
 let prenomEntite = document.getElementById("preNomInput");
 let numTelEntite = document.getElementById("numTelInput");
 let emailEntite = document.getElementById("mailInput");
-const accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqc2ViIiwiZXhwIjoxNzA2MjAwMDU0LCJub20iOiJQcnVkaG9uIn0.a7wF0nU10WhdrhgRDuBbTvFJfIhR8oqCtr6bYhMXBuw";
+let numSecuInput = document.getElementById("numSecuInput");
+let dateNaissanceInput = document.getElementById("dateNaissanceInput");
+let mutuelleInput = document.getElementById("mutuelleInput");
+const accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MDY2MzEzNTYsIm5vbSI6IlBydWRob24iLCJzdWIiOiJqc2ViIn0.uSGrbvucgHN4rWNJDy9inX-Vv0-dvXWGk0AacUt8lEw";
 const formInformations = document.getElementById("formInformations");
 const validationButton = document.getElementById("validationInformations");
 const adresseInput = document.getElementById("adresse");
@@ -16,9 +23,12 @@ const resultsDropdown = document.getElementById("resultsDropdown");
 const resultsDropdownFormulaireAjout = document.getElementById("resultsDropdownFormulaireAjout");
 const medecinTraitantInput = document.getElementById("medecinTraitantInput");
 const apiUrl = "https://api-adresse.data.gouv.fr/search/";
+/* boutons formulaire --------------*/
 const boutonApi = document.getElementById("chargementApi");
 const formRetour = document.getElementById("formRetour");
 const formAjouter = document.getElementById("formAjouter");
+const formModification = document.getElementById("formModification");
+const formSupprimer = document.getElementById("formSupprimer");
 
 formRetour.addEventListener('click',()=>{
     formInformations.style.visibility = 'hidden';
@@ -56,11 +66,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ===================== GESTION PAGES LOGIN ===============================================
 function toggleSection(sectionId) {
-    //Fonction avec id de la section en parametre
-    //Tableau des sections login
+    /*Fonction avec id de la section en parametre
+    //Tableau des sections login*/
     const sections = document.querySelectorAll(".sectionLogin, .activation");
     sections.forEach(function (section) {
-        //condition comparaison des id
+        /*condition comparaison des id*/
         if (section.id === sectionId) {
             section.classList.remove("hidden");
         } else {
@@ -70,8 +80,8 @@ function toggleSection(sectionId) {
 }
 // ====================================== INSCRIPTION UTILISATEUR ======================================================
 
-// Ajoute un gestionnaire d'événements au formulaire avec le paramètre "event" pour empecher la soumission
-// du formulaire au click inscrire et donc evite de raffraichir la page
+/* Ajoute un gestionnaire d'événements au formulaire avec le paramètre "event" pour empecher la soumission
+du formulaire au click inscrire et donc evite de raffraichir la page*/
 document.getElementById("souscrireBtn").addEventListener("click", function(event) {
     event.preventDefault(); // Empêche le comportement par défaut du formulaire
     souscrire();
@@ -125,7 +135,7 @@ async function souscrire() {
 
 
 
-        // Envoi des données utilisateur au serveur pour la création de l'utilisateur
+        /*Envoi des données utilisateur au serveur pour la création de l'utilisateur*/
         const utilisateurData = {
             nomUtilisateur:nomUtilisateur,
             prenomUtilisateur:prenomUtilisateur,
@@ -136,7 +146,7 @@ async function souscrire() {
 
         };
 
-        console.log("utilisateur data", utilisateurData.idInformations);
+        /*console.log("utilisateur data", utilisateurData.idInformations);*/
 
 
         const utilisateurResponse = await fetch('http://localhost:8080/inscription', {
@@ -233,15 +243,13 @@ async function souscrire() {
              });
          }
      });
-
-
  }
 
 // ============== CONNEXION UTILISATEUR ====================================================================
 
 function  handleLogin()
 {
-    // Récupérer les valeurs des champs du formulaire
+    /*Récupérer les valeurs des champs du formulaire*/
     const username = document.getElementById("username").value;
     const password = document.getElementById("motDePasse").value;
     const errorUsername = document.getElementById("errorUsername");
@@ -249,17 +257,14 @@ function  handleLogin()
     if(username === "") {
         errorUsername.innerText = "Ce champ doit être rempli.";
     } else {
-        errorUsername.innerText = ""; // efface le message
+        errorUsername.innerText = ""; /* efface le message*/
     }
-
-    //  valeurs récupérées
+    /*valeurs récupérées
     //console.log("Utilisateur:", username);
    // console.log("Mot de passe:", password);
-    //console.log("Acceptation des conditions:", acceptation);
+    //console.log("Acceptation des conditions:", acceptation);*/
 
-
-
-    // Pré requête pour cross origin (méthode OPTION)
+    /*Pré requête pour cross origin (méthode OPTION)*/
     fetch('http://localhost:8080/connexion', {
         method: 'OPTIONS',
         headers: {
@@ -282,16 +287,15 @@ function  handleLogin()
             }).then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
-
                 }
-                // vérifie le format du retour
+                /*vérifie le format du retour*/
                 const contentType = response.headers.get('content-type');
 
                 if (contentType && contentType.includes('application/json')) {
-                    // La réponse est au format JSON
+                    /*La réponse est au format JSON*/
                     return response.json();
                 } else {
-                    // La réponse est probablement une chaîne, extraction le token
+                    /* La réponse est probablement une chaîne, extraction le token*/
                     return response.text();
                 }
             }).then(data => {
@@ -300,10 +304,9 @@ function  handleLogin()
                 const sidebar = document.getElementById("sidebar");
 
                 sidebar.classList.add("visible-sidebar");
-                console.log('Classe "visible-sidebar" ajoutée');
+                /*console.log('Classe "visible-sidebar" ajoutée');*/
 
                 document.getElementById("sidebar").classList.remove("hidden");
-
 
                 toggleSection("mainSection");
                 infoBasDePage(username);
@@ -393,39 +396,39 @@ return selectedAddressResult;
 /*====================== INFORMATIONS FOOTER ============================================*/
 function infoBasDePage(username){
     const lieuxElement = document.getElementById("lieux");
-    // Obtenir la date actuelle
+    /* Obtenir la date actuelle*/
     const dateActuelle = new Date();
 
-    // Obtenir la partie de la date
+    /*Obtenir la partie de la date*/
     const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
     const dateFormatee = dateActuelle.toLocaleDateString('fr-FR', dateOptions);
 
-    // Obtenir la partie de l'heure
+    /* Obtenir la partie de l'heure*/
     const heureOptions = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
     const heureFormatee = dateActuelle.toLocaleTimeString('fr-FR', heureOptions);
 
-    // Concaténer les informations et les ajouter à l'élément HTML
+    /*Concaténer les informations et les ajouter à l'élément HTML*/
     lieuxElement.textContent = `Session de ${username}     ${dateFormatee}     ${heureFormatee}`;
 }
 
 /*====================== AFFICHAGE PAGES SELON  ENTITES ====================================*/
-// Fonction pour gestion navbar
+/*Fonction pour gestion navbar*/
 function descendreNavbar(element) {
     let nav = document.querySelector('.navbar');
 
-    // Si l'élément est spécifié, cela signifie qu'on veut afficher la barre de navigation
+    /*Si l'élément est spécifié, cela signifie qu'on veut afficher la barre de navigation*/
     if (element) {
         nav.classList.remove('hidden');
     } else {
-        // Si aucun élément n'est spécifié, cela signifie qu'on veut cacher la barre de navigation
+        /*Si aucun élément n'est spécifié, cela signifie qu'on veut cacher la barre de navigation*/
         nav.classList.add('hidden');
     }
 }
 
-// Fonction pour gérer le clic sur les liens des entités ------------------------------
+/* Fonction pour gérer le clic sur les liens des entités ------------------------------*/
 async function gestionEntite(entite)
 {
-    // Attendre le clic sur un lien de la navbar avant de passer à la suite
+    /*Attendre le clic sur un lien de la navbar avant de passer à la suite*/
     descendreNavbar(1);
     const choixGestion = await new Promise(resolve => {
         let links = document.querySelectorAll('.navbar a');
@@ -443,13 +446,13 @@ async function gestionEntite(entite)
     const resultatInformationsNomPrenom = document.getElementById("autocompleteListNomPrenom");
 
     switch (entite) {
-        case 'client':
+        case 'patient':
             switch (choixGestion) {
                 case 'informations':
 
                     pageInformations.style.visibility = 'visible';
                     let h4 = document.getElementById("titreInformations");
-                    h4.innerText = "Informations client"
+                    h4.innerText = "Informations patient"
 
                     /*Ajoute un écouteur d'événements pour le changement de sélection*/
                     inputInformationsNomPrenom.addEventListener("input", async function () {
@@ -467,6 +470,9 @@ async function gestionEntite(entite)
                     formInformations.style.visibility = 'visible';
                     await rechercherMedecins();
                     affichageListDocteurs(resultatsRecherche);
+                    await rechercheMutuelle();
+                    affichageListeMutuelle(resultatRechercheMutuelle);
+                    await miseEnPageSelonEntite(entite);
 
                     break;
             }
@@ -527,7 +533,7 @@ async function gestionEntite(entite)
 
         /* Affiche chaque résultat dans le menu déroulant*/
         resultatInfoNomPrenom.forEach((resultat) => {
-            console.log(resultat);
+           /* console.log(resultat);*/
             const resultatItem = document.createElement("a");
             resultatItem.textContent = resultat.nomPatient +" "+ resultat.prenomPatient;
             resultatItem.addEventListener("click", () => handleResultatInfoNomPrenomClick(resultat));
@@ -555,6 +561,7 @@ async function gestionEntite(entite)
         /* clique sur valider*/
         validationButton.addEventListener("click", function () {
             pageInformations.style.visibility ='hidden';
+            formAjouter.style.display ='none';
             /* Modifier la visibilité de formInformations*/
             formInformations.style.visibility = 'visible';
             document.getElementById("nomInput").value = resultat.nomPatient || "";
@@ -563,12 +570,19 @@ async function gestionEntite(entite)
             document.getElementById("adresseInput").value = resultat.informations.numeroRue +" " +resultat.informations.rue+" "+
                 resultat.informations.codePostal+" "+ resultat.informations.ville || " ";
             document.getElementById("numSecuInput").value = resultat.numeroSecuPatient || "";
-            document.getElementById("medecinTraitantInput").value = resultat.listDocteurs[0].nomDocteur || "";
+            /*vérification si médecin traitant*/
+            if (resultat.listDocteurs && resultat.listDocteurs.length > 0) {
+                /*Si oui, accède à la propriété nomDocteur du premier élément*/
+                document.getElementById("medecinTraitantInput").value = resultat.listDocteurs[0].nomDocteur || "";
+            } else {
+                /*Si non, la valeur de medecinTraitantInput sur une chaîne vide*/
+                document.getElementById("medecinTraitantInput").value = "";
+            }
             document.getElementById("mutuelleInput").value = resultat.nomMutuelle || "";
             document.getElementById("mailInput").value = resultat.informations.mail || "";
             document.getElementById("numTelInput").value = resultat.informations.numeroTelephone || "";
 
-
+            console.log("resultat dans affichage " + JSON.stringify(resultat));
         });
 
         /*  clique API lancement api météo et carte -------------------------------*/
@@ -580,10 +594,49 @@ async function gestionEntite(entite)
         formRetour.addEventListener('click',function (){
             formInformations.style.visibility = 'hidden';
         })
+        /*clique bouton supprimer --------------------------------------------------*/
+        formSupprimer.addEventListener("click", function (){
+               const id = resultat.idPatient;
+               supprimer(id);
+        })
+        /*clique bouton modifer -----------------------------------------------------*/
+        formModification.addEventListener('click',function (){
+            const idPatientModif = resultat.idPatient;
+            const nomPatientModif =  document.getElementById("nomInput").value;
+            const prenomPatientModif =  document.getElementById("preNomInput").value;
+            const dateNaissanceModif = document.getElementById("dateNaissanceInput").value;
+            const adresseModif =document.getElementById("adresseInput").value;
+            const numSecuModif =resultat.numeroSecuPatient;
+            const medecinModif =resultat.listDocteurs[0].nomDocteur || "";
+            const mutuelleModif =resultat.nomMutuelle || "";
+            const mailModif =document.getElementById("mailInput").value;
+            const numTelModif =document.getElementById("numTelInput").value;
 
+            const dataPatientModif = {
+                idPatient: idPatientModif,
+                nomPatient: nomPatientModif,
+                prenomPatient: prenomPatientModif,
+                dateDeNaissance: dateNaissanceModif,
+                numeroSecuPatient: numSecuModif,
+                informations:
+                    {
+                            numeroRue:  resultat.informations.numeroRue,
+                            rue: resultat.informations.rue,
+                            codePostal: resultat.informations.codePostal,
+                             ville: resultat.informations.ville,
+                             mail: mailModif,
+                            numeroTelephone: numTelModif,
+                        latitude: resultat.informations.latitude,
+                        longitude: resultat.informations.longitude,
+                    },
+                 mutuelle: resultat.mutuelle
+
+            }
+            modifierPatient(dataPatientModif, idPatientModif);
+        })
     }
-
 }
+//============================ API METEO ================================
 async function apiMeteo(resultat) {
     let cleApiMeteo = "4fd21252917906a6e447c39d8b623669";
     let latitude = resultat.informations.latitude;
@@ -668,7 +721,7 @@ function affichageMeteo(temperature,ventMeteo,tempsMeteo) {
         document.getElementById('overlay').style.display = 'none';
     });
 }
-
+//================================== API  MAP ==============================
 /**
  * API CARTE OPENSTREETMAP.ORG
  * @param resultat
@@ -721,16 +774,20 @@ function affichageListDocteurs(resultatsRecherche) {
     const autocompleteListContainer = document.getElementById("autocompleteListDocteur");
     autocompleteListContainer.innerHTML = ""; /*Nettoie le conteneur avant d'ajouter de nouveaux éléments*/
 
-    /*Vérifie si resultatsRecherche est défini et n'est pas null*/
+    /*Vérifie si resultatsRecherche est défini et n'est pas nul*/
     if (resultatsRecherche && resultatsRecherche.length > 0) {
         resultatsRecherche.forEach((resultatList) => {
-            const resultatItemDocteur = document.createElement("a");
+             resultatItemDocteur = document.createElement("a");
             resultatItemDocteur.textContent = resultatList.nomDocteur + " " + resultatList.prenomDocteur;
 
             /*Ajoute un écouteur d'événements pour chaque élément*/
             resultatItemDocteur.addEventListener('click', () => {
                 document.getElementById("medecinTraitantInput").value = resultatItemDocteur.textContent;
                 autocompleteListContainer.innerHTML = ""; /*Cache la liste après avoir sélectionné un médecin*/
+                console.log("Docteur sélectionné :", JSON.stringify(resultatList));
+
+                docteurSelectionne = resultatList;
+
             });
 
             /* Ajoute l'élément au conteneur*/
@@ -739,17 +796,74 @@ function affichageListDocteurs(resultatsRecherche) {
     } else {
         console.error('La liste des médecins est vide ou indéfinie.');
     }
+
+    return docteurSelectionne;
+}
+//===================== MENU LISTE DES MUTUELLES ========================
+async function rechercheMutuelle() {
+    try {
+        const retourRechercheMutuelle = await fetch(`http://localhost:8080/mutuelle/all`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!retourRechercheMutuelle.ok) {
+            throw new Error('Erreur réseau ou serveur');
+        }
+        resultatRechercheMutuelle = await retourRechercheMutuelle.json();
+        /*iste des docs ------------------------*/
+        /*console.log(resultatsRecherche);*/
+        /*console.log("nom du doc" +resultatsRecherche[0].nomDocteur);*/
+        return resultatRechercheMutuelle;
+
+    } catch (error) {
+        console.error('Erreur lors de la recherche des mutuelles :', error);
+        return [];
+    }
+}
+function affichageListeMutuelle(resultatRechercheMutuelle){
+    const autocompleteListMutuelleContainer = document.getElementById("autocompleteListMutuelle");
+    autocompleteListMutuelleContainer.innerHTML = "";
+
+    /* Vérifie si resultatRechercheMutuelle est défini et n'est pas nul */
+    if (resultatRechercheMutuelle && resultatRechercheMutuelle.length > 0) {
+        resultatRechercheMutuelle.forEach((resultatMutuelle) => {
+            const resultatItemMutuelle = document.createElement("a");
+            resultatItemMutuelle.textContent = resultatMutuelle.nomMutuelle;
+
+            /* Ajoute un écouteur d'événements pour chaque élément */
+            resultatItemMutuelle.addEventListener('click', () => {
+                /*Afficher les détails de la mutuelle sélectionnée*/
+                console.log("Mutuelle sélectionnée :", resultatMutuelle);
+                /*Mettre à jour le champ mutuelleInput avec le nom de la mutuelle sélectionnée*/
+                document.getElementById("mutuelleInput").value = resultatMutuelle.nomMutuelle;
+                /*Cacher la liste après avoir sélectionné une mutuelle*/
+                autocompleteListMutuelleContainer.innerHTML = "";
+                resultatMutuelleSelectionne = resultatMutuelle;
+            });
+
+            /* Ajoute l'élément au conteneur */
+            autocompleteListMutuelleContainer.appendChild(resultatItemMutuelle);
+        });
+    } else {
+        console.error('La liste des mutuelles est vide ou indéfinie.');
+    }
+    return resultatMutuelleSelectionne;
 }
 
+
+// ======================== GESTION DES  ENTITES =======================================================
 /**
  * AJOUTER ENTITE
  */
-// ======================== GESTION DES  ENTITES =======================================================
 async  function miseEnPageSelonEntite(entite) {
     /*Récupère l'élément du formulaire*/
-   // const formInformations = document.getElementById("formInformations");
+   /*const formInformations = document.getElementById("formInformations");*/
 
-    /*console.log(entite);*/
+    console.log(entite);
 
     /*Remet tous les champs vides et affiche le formulaire*/
     if (formInformations) {
@@ -765,10 +879,18 @@ async  function miseEnPageSelonEntite(entite) {
     } else {
         console.error('Le formulaire est introuvable.');
     }
-console.log("avant le switch, recupere entite "+ entite);
+
     switch (entite) {
         case 'patient':
-            /*Ajouter des ajustements spécifiques pour l'entité "patient"*/
+            formModification.style.display = 'none';
+            formSupprimer.style.display = 'none';
+            formAjouter.style.display = 'block';
+            boutonApi.style.display = 'none';
+            /*écouteur ajouter pour appel de ajouterEntite*/
+            formAjouter.addEventListener('click', () =>{
+                ajouterEntite(entite);
+            })
+
             break;
         case 'docteur':
             /*Masquer les champs spécifiques pour l'entité "médecin"*/
@@ -822,6 +944,7 @@ console.log("avant le switch, recupere entite "+ entite);
 }
 async function ajouterEntite(entite) {
 
+    console.log("Valeur de resultatMutuelle Selectionne dans ajouterEntite :", resultatMutuelleSelectionne);
     /*récupération de l'adresse de l'api*/
     let numRue = selectedAddressResult.properties.housenumber || "";
     let nomRue = selectedAddressResult.properties.street || "";
@@ -862,7 +985,7 @@ async function ajouterEntite(entite) {
              emailEntite = document.getElementById("mailInput").value;
 
 
-            /*Envoi des données utilisateur au serveur pour la création de l'utilisateur*/
+            /*Envoi des données mutuelle au serveur pour la création de l'a mutuelle*/
             entiteData = {
                 nomMutuelle: nomEntite,
                 informations: {
@@ -877,6 +1000,38 @@ async function ajouterEntite(entite) {
 
                 }
             };
+            break;
+        case 'patient':
+           /* console.log("tu tombes dans patient " + entite );*/
+            nomEntite = document.getElementById("nomInput").value;
+            prenomEntite = document.getElementById("preNomInput").value;
+            emailEntite = document.getElementById("mailInput").value;
+            dateNaissanceInput = document.getElementById("dateNaissanceInput").value;
+            numSecuInput = document.getElementById("numSecuInput").value;
+            numTelEntite = document.getElementById("numTelInput").value;
+
+             entiteData=
+                {
+                    nomPatient: nomEntite,
+                    prenomPatient : prenomEntite,
+                    email : emailEntite,
+                    dateDeNaissance : dateNaissanceInput,
+                    numeroSecuPatient : numSecuInput,
+                    informations:
+                        {
+                            numeroRue: numRue,
+                            rue: nomRue,
+                            codePostal: codePostal,
+                            ville: ville,
+                            numeroTelephone: numTelEntite,
+                            mail: emailEntite,
+                            latitude: latitude,
+                            longitude: longitude
+                        },
+                    mutuelle: resultatMutuelleSelectionne,
+                    listDocteurs: docteurSelectionne
+                }
+            console.log("controle avant lancement" + JSON.stringify(entiteData, null, 2));
             break;
 
     }
@@ -911,4 +1066,46 @@ async function ajouterEntite(entite) {
         console.error('Erreur lors de la soumission du formulaire:', error);
     }
 }
+async function supprimer(id){
+    /*console.log("dans supprimer "+ id);*/
+    try{
+                const retourSuppressionPatient = await fetch(`http://localhost:8080/patient/delete/${id}`,{
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                if (!retourSuppressionPatient.ok) {
+                    throw new Error('Erreur réseau ou serveur');
+                }else {
+                    alert("patient supprimé");
+                }
+    } catch (error) {
+        console.error('Erreur lors de la suppression du patient :', error);
+    }
 
+}
+async function modifierPatient(dataPatientModif,idPatientModif){
+
+    console.log("dans modifier " + JSON.stringify(dataPatientModif));
+    try{
+                const retourPatientModifie = await fetch(`http://localhost:8080/patient/update/${idPatientModif}`,{
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(dataPatientModif)
+                });
+                if(!retourPatientModifie.ok){
+                    throw new Error('Erreur réseau ou serveur');
+                }else
+                {
+                    alert("patient modifié");
+                }
+    }          catch (error){
+            console.error('Erreur lors de la modification du patient :', error);
+                }
+
+}
