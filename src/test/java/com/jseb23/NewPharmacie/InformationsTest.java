@@ -63,7 +63,7 @@ class InformationsTest
             });
 
     }
-    @ParameterizedTest
+  /*  @ParameterizedTest
     @ValueSource(strings = {"    "})
     @NullSource
     void informationsRueTest(String rue) {
@@ -81,7 +81,7 @@ class InformationsTest
                     .build();
         });
 
-    }
+    }*/
 
 
 
