@@ -8,6 +8,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
@@ -16,13 +17,13 @@ import static org.mockito.Mockito.when;
 
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 public class InformationsRepositoryTest
 {
-    @Mock
+    @Autowired
     private InformationsRepository informationsRepository;
     @Test
-    void InformationsRepository_SaveAll_ReturnSavedInformations()
+    void InformationsRepository_Save_ReturnSavedInformations()
     {
         //Arrange
         Informations informations = Informations.builder()
@@ -36,18 +37,12 @@ public class InformationsRepositoryTest
                 .longitude("5,2")
                 .build();
 
-        Informations savedInformations = Informations.builder()
-                .idInformations(1L)
-                .build();
-
-        when(informationsRepository.save(any(Informations.class))).thenReturn(savedInformations);
-
         //Act
-        Informations result = informationsRepository.save(informations);
+        Informations savedInformations = informationsRepository.save(informations);
 
         //Assert
-        Assertions.assertThat(result).isNotNull();
-        Assertions.assertThat(result.getIdInformations()).isGreaterThan(0L);
+        Assertions.assertThat(savedInformations).isNotNull();
+        Assertions.assertThat(savedInformations.getIdInformations()).isGreaterThan(0);
     }
 
 
