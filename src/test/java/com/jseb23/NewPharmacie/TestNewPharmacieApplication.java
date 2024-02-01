@@ -12,17 +12,17 @@ import org.testcontainers.utility.DockerImageName;
 @TestConfiguration(proxyBeanMethods = false)
 public class TestNewPharmacieApplication {
 
-	@Bean
+	/*@Bean
 	@ServiceConnection
 	MongoDBContainer mongoDbContainer() {
 		return new MongoDBContainer(DockerImageName.parse("mongo:latest"));
-	}
+	}*/
 
-	@Bean
+	/*@Bean
 	@ServiceConnection
 	MySQLContainer<?> mysqlContainer() {
 		return new MySQLContainer<>(DockerImageName.parse("mysql:latest"));
-	}
+	}*/
 
 	@Bean
 	@ServiceConnection

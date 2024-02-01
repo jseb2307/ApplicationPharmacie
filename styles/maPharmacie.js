@@ -14,7 +14,7 @@ let emailEntite = document.getElementById("mailInput");
 let numSecuInput = document.getElementById("numSecuInput");
 let dateNaissanceInput = document.getElementById("dateNaissanceInput");
 let mutuelleInput = document.getElementById("mutuelleInput");
-const accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MDY2MzEzNTYsIm5vbSI6IlBydWRob24iLCJzdWIiOiJqc2ViIn0.uSGrbvucgHN4rWNJDy9inX-Vv0-dvXWGk0AacUt8lEw";
+const accessToken = "eyJhbGciOiJIUzI1NiJ9.eyJub20iOiJQcnVkaG9uIiwic3ViIjoianNlYiIsImV4cCI6MTcwNjY5NDU0NH0.IYf24vmh3lyzpggp-d7GCUvWxPPG_UFQP_TR7k5Wkj4";
 const formInformations = document.getElementById("formInformations");
 const validationButton = document.getElementById("validationInformations");
 const adresseInput = document.getElementById("adresse");
@@ -782,7 +782,7 @@ function affichageListDocteurs(resultatsRecherche) {
 
             /*Ajoute un écouteur d'événements pour chaque élément*/
             resultatItemDocteur.addEventListener('click', () => {
-                document.getElementById("medecinTraitantInput").value = resultatItemDocteur.textContent;
+                document.getElementById("medecinTraitantInput").value = resultatList.nomDocteur + " " + resultatList.prenomDocteur;/*resultatItemDocteur.textContent;*/
                 autocompleteListContainer.innerHTML = ""; /*Cache la liste après avoir sélectionné un médecin*/
                 console.log("Docteur sélectionné :", JSON.stringify(resultatList));
 
@@ -1029,9 +1029,9 @@ async function ajouterEntite(entite) {
                             longitude: longitude
                         },
                     mutuelle: resultatMutuelleSelectionne,
-                    listDocteurs: docteurSelectionne
+                    listDocteurs: [docteurSelectionne]
                 }
-            console.log("controle avant lancement" + JSON.stringify(entiteData, null, 2));
+           /* console.log("controle avant lancement" + JSON.stringify(entiteData, null, 2));*/
             break;
 
     }
