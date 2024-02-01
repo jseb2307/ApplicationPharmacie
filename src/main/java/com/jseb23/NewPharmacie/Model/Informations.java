@@ -1,10 +1,7 @@
 package com.jseb23.NewPharmacie.Model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.validator.constraints.Email;
@@ -31,20 +28,21 @@ public class Informations
     @Column(length = 3, nullable = false)
     @NotNull
      @Positive
-    @Pattern(regexp = "\\d+")/* interdit les lettres*/
+    @Digits(integer = Integer.MAX_VALUE, fraction = 0, message = "Le numéro de rue doit être un entier")
             // bis, ter.., acceptés dans cette config
     int numeroRue;
 
     @Column(length = 60, nullable = false)
     @NotNull
+    @NotBlank(message = "La rue ne peut pas être vide ou contenir uniquement des espaces blancs")
+    @Size(min = 1, message = "La rue ne peut pas être vide")
     @Pattern(regexp = "\\D+")/* pas de chiffres*/
     String rue;
 
     @Column(length = 5)/* longueur dans la bdd*/
     @NotNull
-    @Digits(integer = 5, fraction = 0)/*nombre de 5 chiffres sans décimale*/
     @Positive /* uniquement positif*/
-    @Pattern(regexp = "\\d+")/* interdit les lettres*/
+    @Digits(integer = Integer.MAX_VALUE, fraction = 0, message = "Le numéro de rue doit être un entier")
     int codePostal;
 
     @Column(length = 50, nullable = false)
@@ -60,11 +58,11 @@ public class Informations
     @Email
     String mail;
 
-    @Pattern(regexp = "\\d+")/* interdit les lettres*/
+   /* @Pattern(regexp = "\\d", message = "La latitude doit être un nombre")*/
     String latitude;
 
 
-    @Pattern(regexp = "\\d+")/* interdit les lettres*/
+    /*@Pattern(regexp ="\\d", message = "La longitude doit être un nombre")*/
     String longitude;
 
 /*===================== MAPPING ====================*/

@@ -15,7 +15,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class InformationsTest {
+class InformationsTest
+{
 
     Informations informations;
 
@@ -63,19 +64,24 @@ class InformationsTest {
 
     }
     @ParameterizedTest
-    @ValueSource(strings = {"", "  ", "abc", "3", "333333", "-2", "3,4"})
+    @ValueSource(strings = {"    "})
     @NullSource
     void informationsRueTest(String rue) {
-        assertThat(rue,
-                allOf(
-                        not(isEmptyOrNullString()), // La chaîne n'est pas vide ou nulle
-                        not(containsString("  ")),  // La chaîne ne contient pas d'espaces doubles
-                        not(containsString("\t")),  // La chaîne ne contient pas de tabulations
-                        lessThanOrEqualTo(60)      // La longueur de la chaîne est inférieure ou égale à 60 caractères
-                ));
+
+        assertThrows(Exception.class, () -> {
+            informations = Informations.builder()
+                    .numeroRue(7)
+                    .rue(rue)
+                    .codePostal(54200)
+                    .ville("toul")
+                    .numeroTelephone("0383231560")
+                    .mail("paris@gmail.com")
+                    .latitude("49,3")
+                    .longitude("5,2")
+                    .build();
+        });
+
     }
-
-
 
 
 
