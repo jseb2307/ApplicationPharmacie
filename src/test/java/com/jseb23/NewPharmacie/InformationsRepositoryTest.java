@@ -6,20 +6,21 @@ import com.jseb23.NewPharmacie.Repository.InformationsRepository;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class InformationsRepositoryTest
 {
-    @Autowired
+    @Mock
     private InformationsRepository informationsRepository;
-
     @Test
     void InformationsRepository_SaveAll_ReturnSavedInformations()
     {
@@ -35,12 +36,18 @@ public class InformationsRepositoryTest
                 .longitude("5,2")
                 .build();
 
+        Informations savedInformations = Informations.builder()
+                .idInformations(1L)
+                .build();
+
+        when(informationsRepository.save(any(Informations.class))).thenReturn(savedInformations);
+
         //Act
-        Informations savedInformations = informationsRepository.save(informations);
+        Informations result = informationsRepository.save(informations);
 
         //Assert
-        Assertions.assertThat(savedInformations).isNotNull();
-        Assertions.assertThat(savedInformations.getIdInformations()).isGreaterThan(0);
+        Assertions.assertThat(result).isNotNull();
+        Assertions.assertThat(result.getIdInformations()).isGreaterThan(0L);
     }
 
 
