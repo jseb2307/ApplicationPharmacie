@@ -5,27 +5,35 @@ import com.jseb23.NewPharmacie.Model.Informations;
 import com.jseb23.NewPharmacie.Repository.InformationsRepository;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
-/*
+
+
+
 @DataJpaTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 public class InformationsRepositoryTest
 {
     @Autowired
     private InformationsRepository informationsRepository;
+
+    /* ================ TEST Sauvegarde Informations =====================*/
     @Test
-    void InformationsRepository_Save_ReturnSavedInformations()
+    public void InformationRepository_Save_ReturnSavedInformation()
     {
-        //Arrange
+
+        /*Arrange*/
         Informations informations = Informations.builder()
                 .numeroRue(7)
                 .rue("rue de la poire")
@@ -37,14 +45,15 @@ public class InformationsRepositoryTest
                 .longitude("5,2")
                 .build();
 
-        //Act
+        /*Act*/
         Informations savedInformations = informationsRepository.save(informations);
 
-        //Assert
+        /*Assert*/
         Assertions.assertThat(savedInformations).isNotNull();
         Assertions.assertThat(savedInformations.getIdInformations()).isGreaterThan(0);
     }
 
 
+
+
 }
-*/
