@@ -65,7 +65,7 @@ public class PatientDTO
                 .collect(Collectors.toList());
     }
 
-    public static Patient mapDTOToPatient(PatientDTO patientDTO) {
+    public static Patient mapDTOToPatient(PatientDTO patientDTO) throws Exception {
         Patient patient = new Patient();
         patient.setNomPatient(patientDTO.getNomPatient());
         patient.setPrenomPatient(patientDTO.getPrenomPatient());

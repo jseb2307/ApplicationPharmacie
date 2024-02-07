@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -66,6 +67,21 @@ public class ConfigurationSecuriteApplication{
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)//
                 .build();
     }
+
+/*   @Configuration
+    @Profile("test")
+    public class TestSecurityConfiguration {
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+            return http
+                    .cors(Customizer.withDefaults())
+                    .csrf(AbstractHttpConfigurer::disable) // Disable CSRF
+                    .authorizeHttpRequests(authorize ->
+                            authorize
+                                    .anyRequest().permitAll())
+                   .build();
+        }
+    }*/
 
     /* ========= AUTHENTIFICATION DE L'UTILISATEUR ===================================================================*/
     @Bean

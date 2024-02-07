@@ -3,6 +3,7 @@ package com.jseb23.NewPharmacie.DTO;
 import com.jseb23.NewPharmacie.Model.Informations;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 @Data
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @AllArgsConstructor
+@Builder
 public class InformationsDTO
 {
          Long idInformations;
@@ -45,7 +47,7 @@ public class InformationsDTO
                 .collect(Collectors.toList());
     }
 
-    public static Informations mapDTOToInformations(InformationsDTO informationsDTO) {
+    public static Informations mapDTOToInformations(InformationsDTO informationsDTO) throws Exception {
         Informations informations = new Informations();
         informations.setNumeroRue(informationsDTO.getNumeroRue());
         informations.setRue(informationsDTO.getRue());

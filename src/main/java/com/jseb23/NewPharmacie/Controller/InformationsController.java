@@ -49,7 +49,7 @@ public class InformationsController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<InformationsDTO> createInformations(@RequestBody InformationsDTO informationsDTO) {
+    public ResponseEntity<InformationsDTO> createInformations(@RequestBody InformationsDTO informationsDTO) throws Exception {
         Informations informations = mapDTOToInformations(informationsDTO);
         Informations createdInformations = informationsService.save(informations);
         InformationsDTO createdInformationsDTO = mapInformationsToDTO(createdInformations);
@@ -58,7 +58,7 @@ public class InformationsController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Informations> updateInformations(@PathVariable Long id, @RequestBody Informations newInformations) {
+    public ResponseEntity<Informations> updateInformations(@PathVariable Long id, @RequestBody Informations newInformations) throws Exception {
         Optional<Informations> existingInformationsOptional = informationsService.findById(id);
 
         if (existingInformationsOptional.isPresent()) {

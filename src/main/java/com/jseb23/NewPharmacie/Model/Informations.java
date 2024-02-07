@@ -28,7 +28,7 @@ public class Informations
     @Column(length = 3, nullable = false)
     @NotNull
      @Positive
-    @Digits(integer = Integer.MAX_VALUE, fraction = 0, message = "Le numéro de rue doit être un entier")
+    @Digits(integer = 5, fraction = 0, message = "Le numéro de rue doit être un entier")
             // bis, ter.., acceptés dans cette config
     int numeroRue;
 
@@ -83,4 +83,79 @@ public class Informations
     List<Utilisateur> listeUtilisateurs;
 
 
+    public void setIdInformations(Long idInformations) {
+        this.idInformations = idInformations;
+    }
+
+    public void setNumeroRue(Integer numeroRue) throws Exception {
+        // Vérification de la non-nullité
+        if (numeroRue == null) {
+            throw new IllegalArgumentException("Le numéro de rue ne peut pas être null.");
+        }
+
+        // Vérification de la non-vide et non-blanc
+        if (numeroRue.toString().trim().isEmpty()) {
+            throw new IllegalArgumentException("Le numéro de rue ne peut pas être vide ou contenir uniquement des espaces blancs.");
+        }
+
+        // Vérification de la positivité
+        if (numeroRue < 0) {
+            throw new IllegalArgumentException("Le numéro de rue ne peut pas être négatif.");
+        }
+
+        // Vérification de la longueur maximale (5 chiffres)
+        if (String.valueOf(numeroRue).length() > 5) {
+            throw new IllegalArgumentException("Le numéro de rue ne peut pas dépasser 5 caractères.");
+        }
+
+        this.numeroRue = numeroRue;
+    }
+
+    public void setRue(String rue) {
+        this.rue = rue;
+    }
+
+    public void setCodePostal(int codePostal) {
+        this.codePostal = codePostal;
+    }
+
+    public void setVille(String ville) {
+        this.ville = ville;
+    }
+
+    public void setNumeroTelephone(String numeroTelephone) {
+        this.numeroTelephone = numeroTelephone;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setDocteurs(List<Docteur> docteurs) {
+        this.docteurs = docteurs;
+    }
+
+    public void setListeMutuelle(List<Mutuelle> listeMutuelle) {
+        this.listeMutuelle = listeMutuelle;
+    }
+
+    public void setListePatient(List<Patient> listePatient) {
+        this.listePatient = listePatient;
+    }
+
+    public void setPharmacie(Pharmacie pharmacie) {
+        this.pharmacie = pharmacie;
+    }
+
+    public void setListeUtilisateurs(List<Utilisateur> listeUtilisateurs) {
+        this.listeUtilisateurs = listeUtilisateurs;
+    }
 }
