@@ -1,10 +1,5 @@
 version: '3.8'  # Version de Docker Compose
 
-# Définition des volumes
-volumes:
-  # Volume pour les données de la base de données PostgreSQL
-  postgres_data:
-
 services:  # Définition des services
 
 
@@ -18,10 +13,6 @@ services:  # Définition des services
       POSTGRES_PASSWORD: root  # Mot de passe PostgreSQL
       POSTGRES_DB: sparadrapHibernate  # Nom de la base de données PostgreSQL
 
-        # Volumes montés
-    volumes:
-        # Montage du volume "postgres_data" à l'emplacement /var/lib/postgresql/data
-        - postgres_data:/var/lib/postgresql/data
   # Service pgAdmin
   pgadmin:
     # Utilise l'image Docker pgAdmin
@@ -50,8 +41,17 @@ services:  # Définition des services
     ports:  # Mapping des ports
       - "8080:8080"  # Mappe le port 8080 du conteneur au port 8080 de l'hôte
     environment:  # Variables d'environnement
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/sparadrapHibernate  # URL de la source de données JDBC
+      SPRING_DATASOURCE_URL: jdbc:postgresql://host.docker.internal:5432/sparadrapHibernate  # Utilisation de "host.docker.internal" pour se connecter à la base de données locale
       SPRING_DATASOURCE_USERNAME: postgres  # Nom d'utilisateur de la base de données
       SPRING_DATASOURCE_PASSWORD: root  # Mot de passe de la base de données
     depends_on:  # Dépendances
       - postgres  # Le service "app" dépend du service "postgres"
+
+  frontend:
+    image: nginx:latest
+    ports:
+      - "80:63342"  # Redirige le port 63342 du conteneur vers le port 80 de l'hôte
+    volumes:
+      - ./path/to/your/frontend/code:/usr/share/nginx/html
+    depends_on:
+      - app
