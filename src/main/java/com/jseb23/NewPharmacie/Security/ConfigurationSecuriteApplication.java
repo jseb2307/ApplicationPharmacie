@@ -68,20 +68,7 @@ public class ConfigurationSecuriteApplication{
                 .build();
     }
 
-/*   @Configuration
-    @Profile("test")
-    public class TestSecurityConfiguration {
-        @Bean
-        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-            return http
-                    .cors(Customizer.withDefaults())
-                    .csrf(AbstractHttpConfigurer::disable) // Disable CSRF
-                    .authorizeHttpRequests(authorize ->
-                            authorize
-                                    .anyRequest().permitAll())
-                   .build();
-        }
-    }*/
+
 
     /* ========= AUTHENTIFICATION DE L'UTILISATEUR ===================================================================*/
     @Bean

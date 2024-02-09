@@ -3,20 +3,26 @@ package com.jseb23.NewPharmacie.Controller;
 
 import com.jseb23.NewPharmacie.Model.Informations;
 import com.jseb23.NewPharmacie.Repository.InformationsRepository;
+import com.jseb23.NewPharmacie.Security.ConfigurationSecuriteApplication;
 import com.jseb23.NewPharmacie.Security.JwtFilter;
 import com.jseb23.NewPharmacie.Security.JwtService;
 import com.jseb23.NewPharmacie.Service.InformationsService;
 import com.jseb23.NewPharmacie.Service.UtilisateurService;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -31,10 +37,9 @@ import java.util.Optional;
 
 import static org.mockito.Mockito.times;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+@Slf4j
 @WebMvcTest(controllers = InformationsController.class)
 @AutoConfigureMockMvc
-
 public class InformationsControllerTest
 {
     @Autowired
@@ -83,6 +88,7 @@ public class InformationsControllerTest
             .longitude("8,2")
             .build();
 
+
     @Test
     @WithMockUser // simule un utilisateur authentifié par spring sécurity
     void getAllInformations_ReturnInformationsList() throws Exception {
@@ -98,7 +104,7 @@ public class InformationsControllerTest
 
 
 
-  /*  @Test
+   /* @Test
     @WithMockUser
     void createInformations_ReturnCreatedInformations() throws Exception {
         // Arrange
@@ -138,22 +144,22 @@ public class InformationsControllerTest
               //  .andExpect(jsonPath("$.mail").value(informationsDTO.getMail()))
                // .andExpect(jsonPath("$.latitude").value(informationsDTO.getLatitude()))
               //  .andExpect(jsonPath("$.longitude").value(informationsDTO.getLongitude()));
-    }
+    }*/
 
     @Test
     void updateInformations() {
     }
 
-    @Test
-    @WithMockUser
+   /* @Test
     void deleteInformations_ExistingId_ReturnNoContent() throws Exception {
         Long idToDelete = 1L;
 
-        Mockito.when(informationsService.findById(idToDelete)).thenReturn(Optional.of(new Informations()));
+        Mockito.when(informationsService.findById(idToDelete)).thenReturn(Optional.ofNullable(informations));
+        log.info(objectWriter.writeValueAsString(informations));
 
         mockMvc.perform(MockMvcRequestBuilders.delete("http://localhost:8080/informations/delete/{id}", idToDelete)
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isNoContent());
-    }*/
-
+    }
+*/
 }

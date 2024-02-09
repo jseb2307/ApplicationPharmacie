@@ -1,0 +1,57 @@
+version: '3.8'  # Version de Docker Compose
+
+# Définition des volumes
+volumes:
+  # Volume pour les données de la base de données PostgreSQL
+  postgres_data:
+
+services:  # Définition des services
+
+
+  postgres:  # Service PostgreSQL
+    image: postgres:latest  # Utilise l'image officielle PostgreSQL
+    container_name: postgres_container  # Nom du conteneur PostgreSQL
+    ports:  # Mapping des ports
+      - "5432:5432"  # Mappe le port 5432 du conteneur au port 5432 de l'hôte
+    environment:  # Variables d'environnement
+      POSTGRES_USER: postgres  # Nom d'utilisateur PostgreSQL
+      POSTGRES_PASSWORD: root  # Mot de passe PostgreSQL
+      POSTGRES_DB: sparadrapHibernate  # Nom de la base de données PostgreSQL
+
+        # Volumes montés
+    volumes:
+        # Montage du volume "postgres_data" à l'emplacement /var/lib/postgresql/data
+        - postgres_data:/var/lib/postgresql/data
+  # Service pgAdmin
+  pgadmin:
+    # Utilise l'image Docker pgAdmin
+    image: dpage/pgadmin4:latest
+    # Nom du conteneur pgAdmin
+    container_name: pgadmin_container
+    # Ports exposés
+    ports:
+      # Mappe le port 5050 du conteneur au port 5050 de l'hôte
+      - "5050:5050"
+    # Variables d'environnement
+    environment:
+      # Adresse e-mail par défaut pour pgAdmin
+      PGADMIN_DEFAULT_EMAIL: jseb23@gmail.com
+      # Mot de passe par défaut pour pgAdmin
+      PGADMIN_DEFAULT_PASSWORD: root
+    # Dépendances
+    depends_on:
+      # pgAdmin dépend de PostgreSQL
+      - postgres
+
+  app:  # Service pour votre application
+    build:  # Construction de l'image à partir du Dockerfile
+      context: .  # Utilise le répertoire courant
+      dockerfile: Dockerfile  # Spécifie le Dockerfile à utiliser
+    ports:  # Mapping des ports
+      - "8080:8080"  # Mappe le port 8080 du conteneur au port 8080 de l'hôte
+    environment:  # Variables d'environnement
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/sparadrapHibernate  # URL de la source de données JDBC
+      SPRING_DATASOURCE_USERNAME: postgres  # Nom d'utilisateur de la base de données
+      SPRING_DATASOURCE_PASSWORD: root  # Mot de passe de la base de données
+    depends_on:  # Dépendances
+      - postgres  # Le service "app" dépend du service "postgres"

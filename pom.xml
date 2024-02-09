@@ -15,6 +15,8 @@
 	<description>Application pharmacie</description>
 	<properties>
 		<java.version>17</java.version>
+		<selenium-java.version>4.17.0</selenium-java.version>
+		<webdriver.version>5.6.3</webdriver.version>
 	</properties>
 	<dependencies>
 
@@ -202,13 +204,28 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-autoconfigure</artifactId>
 		</dependency>
-
+		<!---============= TEST ====================== -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 			<version>6.0.3</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>${selenium-java.version}</version>
+		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
+		<dependency>
+			<groupId>io.github.bonigarcia</groupId>
+			<artifactId>webdrivermanager</artifactId>
+			<version>${webdriver.version}</version>
+		</dependency>
+
 
 	</dependencies>
 
