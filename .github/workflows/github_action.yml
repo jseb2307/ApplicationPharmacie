@@ -37,7 +37,7 @@ jobs:
       - name: Checkout du code
         uses: actions/checkout@v4
 
-      - name: Installer Docker
+      - name: Installation Docker
         run: |
           sudo apt-get update
           sudo apt-get install -y docker-ce-cli
