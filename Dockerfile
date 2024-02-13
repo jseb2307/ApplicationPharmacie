@@ -1,4 +1,4 @@
-# Utilise l'image Maven officielle comme base
+# Utilise une image Maven officielle comme base
 FROM maven:latest AS builder
 
 # Définit le répertoire de travail dans le conteneur
@@ -27,3 +27,7 @@ COPY --from=builder /app/target/NewPharmacie-0.0.1-SNAPSHOT.jar ./app.jar
 
 # Définis la commande pour lancer l'application au démarrage du conteneur
 CMD ["java", "-jar", "app.jar"]
+
+# Copie les fichiers front-end depuis /src/main/resources/static/ vers le répertoire de l'application
+COPY /src/main/resources/ /var/www/html/
+COPY /src/main/resources/images/ /var/www/html/images/

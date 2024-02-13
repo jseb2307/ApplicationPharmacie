@@ -2,7 +2,6 @@ version: '3.8'  # Version de Docker Compose
 
 services:  # Définition des services
 
-
   postgres:  # Service PostgreSQL
     image: postgres:latest  # Utilise l'image officielle PostgreSQL
     container_name: postgres_container  # Nom du conteneur PostgreSQL
@@ -13,26 +12,16 @@ services:  # Définition des services
       POSTGRES_PASSWORD: root  # Mot de passe PostgreSQL
       POSTGRES_DB: sparadrapHibernate  # Nom de la base de données PostgreSQL
 
-  # Service pgAdmin
-  pgadmin:
-    # Utilise l'image Docker pgAdmin
-    image: dpage/pgadmin4:latest
-    # Nom du conteneur pgAdmin
-    container_name: pgadmin_container
-    # Ports exposés
-    ports:
-      # Mappe le port 5050 du conteneur au port 5050 de l'hôte
-      - "5050:5050"
-    # Variables d'environnement
-    environment:
-      # Adresse e-mail par défaut pour pgAdmin
-      PGADMIN_DEFAULT_EMAIL: jseb23@gmail.com
-      # Mot de passe par défaut pour pgAdmin
-      PGADMIN_DEFAULT_PASSWORD: root
-    # Dépendances
-    depends_on:
-      # pgAdmin dépend de PostgreSQL
-      - postgres
+  pgadmin:  # Service pgAdmin
+    image: dpage/pgadmin4:latest  # Utilise l'image Docker pgAdmin
+    container_name: pgadmin_container  # Nom du conteneur pgAdmin
+    ports:  # Ports exposés
+      - "5050:5050"  # Mappe le port 5050 du conteneur au port 5050 de l'hôte
+    environment:  # Variables d'environnement
+      PGADMIN_DEFAULT_EMAIL: jseb23@gmail.com  # Adresse e-mail par défaut pour pgAdmin
+      PGADMIN_DEFAULT_PASSWORD: root  # Mot de passe par défaut pour pgAdmin
+    depends_on:  # Dépendances
+      - postgres  # pgAdmin dépend de PostgreSQL
 
   app:  # Service pour votre application
     build:  # Construction de l'image à partir du Dockerfile
@@ -47,11 +36,12 @@ services:  # Définition des services
     depends_on:  # Dépendances
       - postgres  # Le service "app" dépend du service "postgres"
 
-  frontend:
-    image: nginx:latest
-    ports:
-      - "80:63342"  # Redirige le port 63342 du conteneur vers le port 80 de l'hôte
-    volumes:
-      - ./path/to/your/frontend/code:/usr/share/nginx/html
-    depends_on:
-      - app
+  frontend:  # Service pour le serveur HTTP Apache
+    image: httpd:latest  # Utilisation de l'image Apache HTTP Server (httpd)
+    ports:  # Ports exposés
+      - "80:80"  # Redirige le port 80 du conteneur vers le port 80 de l'hôte
+    volumes:  # Montage des volumes
+      - ./src/main/resources/static:/usr/local/apache2/htdocs  # Montage du répertoire contenant les fichiers front-end dans le conteneur Apache
+      - ./src/main/resources/images:/usr/local/apache2/htdocs/images
+    depends_on:  # Dépendances
+      - app  # Le service "frontend" dépend du service "app"
