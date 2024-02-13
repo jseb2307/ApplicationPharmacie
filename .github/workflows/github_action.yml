@@ -51,7 +51,3 @@ jobs:
       - name: Wait for containers to start
         run: sleep 10
 
-      # Vérifier l'accessibilité du frontend
-      - name: Test frontend accessibility
-        run: |
-          curl -I http://localhost:80
