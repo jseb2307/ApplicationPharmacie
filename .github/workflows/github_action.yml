@@ -44,9 +44,16 @@ jobs:
 
       - name: Start Docker Compose
         run: |
-          sudo docker-compose --version
-          sudo docker-compose -f ../docker-compose.yml up --force-recreate -d
-          sudo docker ps
+          docker-compose --version
+          docker-compose up --force-recreate -d
+          docker ps
 
+      # Attendre quelques secondes pour permettre aux conteneurs de démarrer
+      - name: Wait for containers to start
+        run: sleep 30
 
+  # Vérifier l'accessibilité du frontend
+      - name: Test frontend accessibility
+    run: |
+      curl -I http://localhost:80
 
