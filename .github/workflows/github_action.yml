@@ -1,4 +1,3 @@
-
 name: Java CI/CD avec Maven et Docker Compose
 
 on:
@@ -50,10 +49,9 @@ jobs:
 
       # Attendre quelques secondes pour permettre aux conteneurs de démarrer
       - name: Wait for containers to start
-        run: sleep 30
+        run: sleep 10
 
-  # Vérifier l'accessibilité du frontend
+      # Vérifier l'accessibilité du frontend
       - name: Test frontend accessibility
-    run: |
-      curl -I http://localhost:80
-
+        run: |
+          curl -I http://localhost:80
