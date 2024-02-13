@@ -28,7 +28,7 @@ jobs:
           sudo apt-get install google-chrome-stable
           google-chrome --version
 
-      - name: Build with Maven
+      - name: Construction avec Maven
         run: mvn -B verify --file pom.xml
 
   build_docker:
@@ -37,7 +37,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Docker Compose
+      - name: Installation Docker Compose
         run: |
           sudo apt-get update
           sudo apt-get install -y docker-compose
