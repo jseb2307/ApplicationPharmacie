@@ -1,0 +1,7 @@
+# Utilisation de l'image officielle de PostgreSQL
+FROM postgres:latest
+
+# Variables d'environnement pour configurer PostgreSQL
+ENV POSTGRES_USER=postgres
+ENV POSTGRES_PASSWORD=root
+ENV POSTGRES_DB=sparadrapHibernate
