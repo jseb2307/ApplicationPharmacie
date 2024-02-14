@@ -66,6 +66,12 @@ jobs:
           push: true
           tags: jseb23/my-application:apache-latest
 
+      # Utilisation de la sortie de l'action pour récupérer l'ID de l'image
+      - name: Get Apache Image ID
+        run:
+        echo "Apache Image ID: ${{ steps.build_apache_image.outputs.imageDigest }}"
+
+
   build_docker:
     runs-on: ubuntu-latest
     needs: build_maven
