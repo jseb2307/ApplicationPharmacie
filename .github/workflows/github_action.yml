@@ -45,7 +45,7 @@ jobs:
       - name: Build and Push Docker Image for PostgreSQL
         uses: docker/build-push-action@v2
         with:
-          context: .\postgresql
+          context: C:/PROJETS/JAVA/NewPharmacie/postgresql
           file: Dockerfile
           push: true
           tags: jseb23/my-application:postgresql-latest
@@ -53,7 +53,7 @@ jobs:
       - name: Build and Push Docker Image for pgAdmin
         uses: docker/build-push-action@v2
         with:
-          context: .\pgadmin
+          context: C:/PROJETS/JAVA/NewPharmacie/pgadmin
           file: Dockerfile
           push: true
           tags: jseb23/my-application:pgadmin-latest
@@ -61,7 +61,7 @@ jobs:
       - name: Build and Push Docker Image for Apache HTTP Server
         uses: docker/build-push-action@v2
         with:
-          context: .\apache
+          context: C:/PROJETS/JAVA/NewPharmacie/apache
           file: Dockerfile
           push: true
           tags: jseb23/my-application:apache-latest
