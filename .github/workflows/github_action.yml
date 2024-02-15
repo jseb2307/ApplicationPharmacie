@@ -1,3 +1,4 @@
+# ce workflow est désactivé pour le moment
 name: Java CI/CD avec Maven et Docker Compose
 
 on:
@@ -65,12 +66,6 @@ jobs:
           file: Dockerfile_apache
           push: true
           tags: jseb23/my-application:apache-latest
-            
-            # Récupération de l'ID de l'image Apache
-                  - name: Get Apache Image ID
-                  run:
-                    echo "Apache Image ID: ${{ steps.build_apache_image.outputs.imageDigest }}"
-
 
   build_docker:
     runs-on: ubuntu-latest
