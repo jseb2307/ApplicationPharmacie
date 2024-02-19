@@ -33,6 +33,6 @@ public class Mutuelle {
 
     @OneToMany(mappedBy = "mutuelle")
     private List<Patient> listPatients;
-
+ /* essai 2 */
 }
 
