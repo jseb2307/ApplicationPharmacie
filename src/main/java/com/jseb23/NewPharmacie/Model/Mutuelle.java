@@ -16,8 +16,7 @@ import java.util.List;
 @ToString
 @Entity
 
-public class Mutuelle
-{
+public class Mutuelle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long idMutuelle;
@@ -35,7 +34,5 @@ public class Mutuelle
     @OneToMany(mappedBy = "mutuelle")
     private List<Patient> listPatients;
 
-
-/*===============essai*/
 }
 
