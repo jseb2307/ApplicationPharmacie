@@ -1,0 +1,12 @@
+pgadmin:
+  build:
+    context: ./chemin/vers/le/dossier/pgadmin
+    dockerfile: Dockerfile.pgadmin  # Spécifie le nom du Dockerfile à utiliser
+  container_name: pgadmin_container
+  ports:
+    - "5050:5050"
+  environment:
+    PGADMIN_DEFAULT_EMAIL: jseb23@gmail.com
+    PGADMIN_DEFAULT_PASSWORD: root
+  depends_on:
+    - postgres
