@@ -1,6 +1,7 @@
 
 pipeline {
 
+// acces dockerHub
     environment {
         registry = "jseb23/my-application"
         registryCredential = 'DockerHub_Id'
@@ -8,7 +9,7 @@ pipeline {
     }
 
     agent any
-
+// récupèration projet dans github
     stages {
         stage('Checkout') {
             steps {

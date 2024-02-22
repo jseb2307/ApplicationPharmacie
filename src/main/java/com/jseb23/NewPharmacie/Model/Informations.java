@@ -83,15 +83,13 @@ public class Informations
     List<Utilisateur> listeUtilisateurs;
 
 
-    public void setIdInformations(Long idInformations) {
+    void setIdInformations(Long idInformations) {
         this.idInformations = idInformations;
     }
 
-    public void setNumeroRue(Integer numeroRue) throws Exception {
+    public void setNumeroRue(Integer numeroRue) throws IllegalArgumentException {
         // Vérification de la non-nullité
-        if (numeroRue == null) {
-            throw new IllegalArgumentException("Le numéro de rue ne peut pas être null.");
-        }
+        if (numeroRue == null) throw new IllegalArgumentException("Le numéro de rue ne peut pas être null.");
 
         // Vérification de la non-vide et non-blanc
         if (numeroRue.toString().trim().isEmpty()) {

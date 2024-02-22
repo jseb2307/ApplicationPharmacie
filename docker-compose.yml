@@ -11,6 +11,8 @@ services:  # Définition des services
       POSTGRES_USER: postgres  # Nom d'utilisateur PostgreSQL
       POSTGRES_PASSWORD: root  # Mot de passe PostgreSQL
       POSTGRES_DB: sparadrapHibernate  # Nom de la base de données PostgreSQL
+      PGHOST: host.docker.internal  # Adresse IP spéciale pour accéder à la base de données locale
+      PGPORT: 5432  # Port de la base de données PostgreSQL locale
 
   pgadmin:  # Service pgAdmin
     image: dpage/pgadmin4:latest  # Utilise l'image Docker pgAdmin
