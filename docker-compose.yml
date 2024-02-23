@@ -1,18 +1,22 @@
 version: '3.8'  # Version de Docker Compose
 
-services:  # Définition des services
+services:
 
-  postgres:  # Service PostgreSQL
-    image: postgres:latest  # Utilise l'image officielle PostgreSQL
-    container_name: postgres_container  # Nom du conteneur PostgreSQL
-    ports:  # Mapping des ports
-      - "5432:5432"  # Mappe le port 5432 du conteneur au port 5432 de l'hôte
-    environment:  # Variables d'environnement
-      POSTGRES_USER: postgres  # Nom d'utilisateur PostgreSQL
-      POSTGRES_PASSWORD: root  # Mot de passe PostgreSQL
-      POSTGRES_DB: sparadrapHibernate  # Nom de la base de données PostgreSQL
-      PGHOST: host.docker.internal  # Adresse IP spéciale pour accéder à la base de données locale
-      PGPORT: 5432  # Port de la base de données PostgreSQL locale
+  postgres:
+    build:
+      context: C:\ProgramData\Jenkins\.jenkins\workspace\pipeline_sparadrap
+      dockerfile: Dockerfile_postgresql
+    container_name: postgres_container
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: sparadrapHibernate
+    volumes:
+      - type: bind
+        source: C:\Program Files\PostgreSQL\16\data
+        target: /var/lib/postgresql/data
 
   pgadmin:  # Service pgAdmin
     image: dpage/pgadmin4:latest  # Utilise l'image Docker pgAdmin
