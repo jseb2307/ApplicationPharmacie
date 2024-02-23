@@ -17,12 +17,12 @@ VOLUME /var/lib/postgresql/data
 # ### Initialisation personnalisée
 # Définit un point d'entrée personnalisé pour exécuter un script d'initialisation
 # Lance le script `/docker-entrypoint.sh` au démarrage
-CMD ["/docker-entrypoint.sh"]
+#CMD ["/docker-entrypoint.sh"]
 
 # ### Script d'initialisation
 # Copie le script d'initialisation dans le conteneur
-COPY docker-entrypoint.sh /docker-entrypoint.sh
+#COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 # Définit les permissions d'exécution sur le script
-RUN chmod +x /docker-entrypoint.sh
+#RUN chmod +x /docker-entrypoint.sh
 
