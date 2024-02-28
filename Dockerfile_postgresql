@@ -9,20 +9,3 @@ ENV POSTGRES_USER=postgres
 ENV POSTGRES_PASSWORD=root
 ENV POSTGRES_DB=sparadrapHibernate
 
-# ### Volume persistant
-# Crée un volume pour stocker les données de la base de données de manière persistante
-# Emplacement du volume dans le conteneur
-VOLUME /var/lib/postgresql/data
-
-# ### Initialisation personnalisée
-# Définit un point d'entrée personnalisé pour exécuter un script d'initialisation
-# Lance le script `/docker-entrypoint.sh` au démarrage
-#CMD ["/docker-entrypoint.sh"]
-
-# ### Script d'initialisation
-# Copie le script d'initialisation dans le conteneur
-#COPY docker-entrypoint.sh /docker-entrypoint.sh
-
-# Définit les permissions d'exécution sur le script
-#RUN chmod +x /docker-entrypoint.sh
-
